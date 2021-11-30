@@ -3,6 +3,7 @@
 // Website: https://www.blazor.zone or https://argozhang.github.io/
 
 using BootstrapBlazor.Components;
+using BootstrapBlazor.Server;
 using BootstrapBlazor.Server.Services;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // 增加演示网站服务
             services.AddWebSiteServices();
 
+            services.AddLocalization(option => option.ResourcesPath = "Resources");
             // 增加 BootstrapBlazor 组件
             services.AddBootstrapBlazor(options =>
             {
@@ -37,12 +39,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Themes.AddRange(themes);
             }, options =>
             {
+                options.ResourceManagerStringLocalizerType = typeof(Cat);
                 // 附加自己的 json 多语言文化资源文件 如 zh-TW.json
-                options.AdditionalJsonAssemblies = new Assembly[]
-                {
-                    typeof(BootstrapBlazor.Shared.App).Assembly,
-                    typeof(BootstrapBlazor.Components.Chart).Assembly
-                };
+                //options.AdditionalJsonAssemblies = new Assembly[]
+                //{
+                //    typeof(BootstrapBlazor.Shared.App).Assembly,
+                //    typeof(BootstrapBlazor.Components.Chart).Assembly
+                //};
             });
 
             // 增加多语言支持配置信息

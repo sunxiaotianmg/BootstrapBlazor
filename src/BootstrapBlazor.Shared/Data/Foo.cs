@@ -33,7 +33,7 @@ namespace BootstrapBlazor.Shared
         /// </summary>
         [Required(ErrorMessage = "{0}不能为空")]
         [AutoGenerateColumn(Order = 10, Filterable = true, Searchable = true)]
-        [Display(Name = "姓名")]
+        [Display(Name = "Name1")]
         public string? Name { get; set; }
 
         /// <summary>

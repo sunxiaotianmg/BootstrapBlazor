@@ -84,6 +84,8 @@ namespace BootstrapBlazor.Shared.Shared
         {
             await base.OnAfterRenderAsync(firstRender);
 
+            var val = Utility.GetDisplayName(typeof(Foo), nameof(Foo.Name));
+
             if (firstRender)
             {
                 await JSRuntime.InvokeVoidAsync("$.bb_tooltip_site", MsLearnElement);
