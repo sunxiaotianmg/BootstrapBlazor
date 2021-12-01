@@ -24,9 +24,9 @@
         @if (ShowSearch && SearchMode == SearchMode.Top)
         {
             <div class="table-search">
-                @if(CustomerSearchModel != null)
+                @if(CustomerSearchTemplate != null)
                 {
-                    @CustomerSearchTemplate?.Invoke(CustomerSearchModel)
+                    @CustomerSearchTemplate(CustomerSearchModel)
                 }
                 else
                 {
