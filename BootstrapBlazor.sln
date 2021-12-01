@@ -115,6 +115,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BootstrapBlazor.Middleware"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest.Localization", "test\UnitTest.Localization\UnitTest.Localization.csproj", "{99B55645-0E89-43F8-938F-2304B486AD2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp1", "BlazorApp1\BlazorApp1.csproj", "{B6B5569E-4C5D-49C3-AFD3-A5342AD7D2C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -177,6 +179,10 @@ Global
 		{99B55645-0E89-43F8-938F-2304B486AD2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99B55645-0E89-43F8-938F-2304B486AD2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99B55645-0E89-43F8-938F-2304B486AD2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6B5569E-4C5D-49C3-AFD3-A5342AD7D2C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B5569E-4C5D-49C3-AFD3-A5342AD7D2C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B5569E-4C5D-49C3-AFD3-A5342AD7D2C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B5569E-4C5D-49C3-AFD3-A5342AD7D2C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -206,6 +212,7 @@ Global
 		{4A7F4513-C515-40DD-A217-169E1CBB2827} = {A2182155-43ED-44C1-BF6F-1B70EBD2DFFE}
 		{59B49D4C-05FB-4E51-AB40-9498ADC71DD0} = {4A7F4513-C515-40DD-A217-169E1CBB2827}
 		{99B55645-0E89-43F8-938F-2304B486AD2A} = {7C1D79F1-87BC-42C1-BD5A-CDE4044AC1BD}
+		{B6B5569E-4C5D-49C3-AFD3-A5342AD7D2C7} = {A2182155-43ED-44C1-BF6F-1B70EBD2DFFE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0DCB0756-34FA-4FD0-AE1D-D3F08B5B3A6B}

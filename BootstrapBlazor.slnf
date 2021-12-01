@@ -2,6 +2,7 @@
   "solution": {
     "path": "BootstrapBlazor.sln",
     "projects": [
+      "BlazorApp1\\BlazorApp1.csproj",
       "src\\BootstrapBlazor.Server\\BootstrapBlazor.Server.csproj",
       "src\\BootstrapBlazor.Shared\\BootstrapBlazor.Shared.csproj",
       "src\\BootstrapBlazor\\BootstrapBlazor.csproj",
