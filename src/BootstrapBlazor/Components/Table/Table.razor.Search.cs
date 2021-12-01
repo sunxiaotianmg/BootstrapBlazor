@@ -212,7 +212,7 @@ namespace BootstrapBlazor.Components
             var searchs = new List<IFilterAction>();
             if (!string.IsNullOrEmpty(SearchText))
             {
-                searchs.AddRange(columns.Where(col => col.PropertyType == typeof(string)).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText)));
+                searchs.AddRange(columns.Where(col => col.Searchable && ((Nullable.GetUnderlyingType(col.PropertyType) ?? col.PropertyType) == typeof(string))).Select(col => new SearchFilterAction(col.GetFieldName(), SearchText)));
             }
             // 处理自定义 SearchModel 条件
             if (CustomerSearchModel != null)
