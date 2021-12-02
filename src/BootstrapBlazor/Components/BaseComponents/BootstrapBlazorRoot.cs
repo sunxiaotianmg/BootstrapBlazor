@@ -3,6 +3,8 @@
 // Website: https://www.blazor.zone or https://argozhang.github.io/
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
@@ -11,7 +13,12 @@ namespace BootstrapBlazor.Components
     /// <summary>
     /// BootstrapBlazorRoot 组件
     /// </summary>
-    public partial class BootstrapBlazorRoot
+    public class BootstrapBlazorRoot
+#if NET5_0
+        : ComponentBase
+#elif NET6_0_OR_GREATER
+        : ErrorBoundaryBase
+#endif
     {
         [Inject]
         [NotNull]
@@ -46,5 +53,37 @@ namespace BootstrapBlazor.Components
 
             await base.SetParametersAsync(parameters);
         }
+
+        /// <summary>
+        /// BuildRenderTree 方法
+        /// </summary>
+        /// <param name="builder"></param>
+        protected override void BuildRenderTree(RenderTreeBuilder builder)
+        {
+            var index = 0;
+
+
+            RenderFragment RenderChildContent() => builder =>
+            {
+                builder.OpenComponent<CascadingValue<BootstrapBlazorRoot>>(0);
+                builder.AddAttribute(1, nameof(CascadingValue<BootstrapBlazorRoot>.IsFixed), true);
+                builder.AddAttribute(2, nameof(CascadingValue<BootstrapBlazorRoot>.Value), this);
+                builder.AddContent(3, ChildContent);
+                builder.CloseComponent();
+            };
+        }
+
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        protected override Task OnErrorAsync(Exception exception)
+        {
+            return Task.CompletedTask;
+        }
+#endif
     }
 }
