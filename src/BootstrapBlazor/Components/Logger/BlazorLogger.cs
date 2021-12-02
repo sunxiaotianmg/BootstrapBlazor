@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,7 +18,12 @@ namespace BootstrapBlazor.Components
     /// <summary>
     /// 
     /// </summary>
-    public class BlazorLogger : BootstrapComponentBase, IBlazorLogger
+    public class BlazorLogger
+#if NET5_0
+        : BootstrapComponentBase, IBlazorLogger
+#elif NET6_0_OR_GREATER
+        : ErrorBoundaryBase, IBlazorLogger
+#endif
     {
         /// <summary>
         /// 
@@ -33,11 +39,13 @@ namespace BootstrapBlazor.Components
         [NotNull]
         public IConfiguration? Configuration { get; set; }
 
+#if NET5_0
         /// <summary>
         /// 
         /// </summary>
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
+#endif
 
         /// <summary>
         /// BuildRenderTree 方法
@@ -47,10 +55,69 @@ namespace BootstrapBlazor.Components
         {
             builder.OpenComponent<CascadingValue<IBlazorLogger>>(0);
             builder.AddAttribute(1, nameof(CascadingValue<IBlazorLogger>.Value), this);
-            builder.AddAttribute(1, nameof(CascadingValue<IBlazorLogger>.IsFixed), true);
-            builder.AddAttribute(2, nameof(CascadingValue<IBlazorLogger>.ChildContent), ChildContent);
+            builder.AddAttribute(2, nameof(CascadingValue<IBlazorLogger>.IsFixed), true);
+#if NET5_0
+            builder.AddAttribute(3, nameof(CascadingValue<IBlazorLogger>.ChildContent), ChildContent);
+#elif NET6_0_OR_GREATER
+            if (CurrentException != null)
+            {
+                builder.AddAttribute(3, nameof(CascadingValue<IBlazorLogger>.ChildContent), ErrorContent?.Invoke(CurrentException) ?? ChildContent);
+            }
+            else
+            {
+                builder.AddAttribute(4, nameof(CascadingValue<IBlazorLogger>.ChildContent), ChildContent);
+            }
+#endif
             builder.CloseComponent();
         }
+
+#if NET6_0_OR_GREATER
+        [Inject]
+        [NotNull]
+        private IErrorBoundaryLogger? ErrorBoundaryLogger { get; set; }
+
+        [Inject]
+        [NotNull]
+        private ToastService? ToastService { get; set; }
+
+        /// <summary>
+        /// OnErrorAsync 方法
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        protected override async Task OnErrorAsync(Exception exception)
+        {
+            Recover();
+
+            await ErrorBoundaryLogger.LogErrorAsync(exception);
+            await ToastService.Error("App", exception.Message);
+        }
+
+        /// <summary>
+        /// OnInitialized 方法
+        /// </summary>
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+#if DEBUG
+            if (ErrorContent == null)
+            {
+                ErrorContent = ex => builder =>
+                {
+                    var index = 0;
+                    builder.OpenElement(index++, "div");
+                    builder.AddContent(index++, ex.Message);
+                    builder.CloseElement();
+                    builder.OpenElement(index++, "div");
+                    builder.AddContent(index++, ex.StackTrace);
+                    builder.CloseElement();
+                };
+            }
+#endif
+        }
+#endif
 
         /// <summary>
         /// 

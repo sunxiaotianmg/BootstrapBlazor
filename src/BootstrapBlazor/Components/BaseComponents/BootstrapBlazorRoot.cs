@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -30,6 +31,15 @@ namespace BootstrapBlazor.Components
         /// </summary>
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
+
+#elif NET6_0_OR_GREATER
+        [Inject]
+        [NotNull]
+        private IErrorBoundaryLogger? ErrorBoundaryLogger { get; set; }
+
+        [Inject]
+        [NotNull]
+        private ToastService? ToastService { get; set; }
 #endif
 
         /// <summary>
@@ -110,7 +120,18 @@ namespace BootstrapBlazor.Components
                 builder.OpenComponent<CascadingValue<BootstrapBlazorRoot>>(0);
                 builder.AddAttribute(1, nameof(CascadingValue<BootstrapBlazorRoot>.IsFixed), true);
                 builder.AddAttribute(2, nameof(CascadingValue<BootstrapBlazorRoot>.Value), this);
-                builder.AddContent(3, ChildContent);
+#if NET5_0
+                builder.AddAttribute(3, nameof(CascadingValue<BootstrapBlazorRoot>.ChildContent), ChildContent);
+#elif NET6_0_OR_GREATER
+                if (CurrentException != null)
+                {
+                    builder.AddAttribute(3, nameof(CascadingValue<BootstrapBlazorRoot>.ChildContent), ErrorContent?.Invoke(CurrentException) ?? ChildContent);
+                }
+                else
+                {
+                    builder.AddAttribute(4, nameof(CascadingValue<BootstrapBlazorRoot>.ChildContent), ChildContent);
+                }
+#endif
                 builder.CloseComponent();
             };
         }
@@ -122,9 +143,12 @@ namespace BootstrapBlazor.Components
         /// <param name="exception"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        protected override Task OnErrorAsync(Exception exception)
+        protected override async Task OnErrorAsync(Exception exception)
         {
-            return Task.CompletedTask;
+            Recover();
+
+            await ErrorBoundaryLogger.LogErrorAsync(exception);
+            await ToastService.Error("App", exception.Message);
         }
 #endif
     }

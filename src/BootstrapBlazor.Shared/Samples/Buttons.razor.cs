@@ -17,9 +17,7 @@ namespace BootstrapBlazor.Shared.Samples
     /// </summary>
     public sealed partial class Buttons
     {
-        /// <summary>
-        /// 
-        /// </summary>
+        [NotNull]
         private BlockLogger? Trace { get; set; }
 
         [NotNull]
@@ -46,7 +44,8 @@ namespace BootstrapBlazor.Shared.Samples
         /// <param name="e"></param>
         private void ButtonClick(MouseEventArgs e)
         {
-            Trace?.Log($"Button Clicked");
+            Trace.Log($"Button Clicked");
+            throw new System.Exception("just a test exception");
         }
 
         private string ButtonText { get; set; } = "";
