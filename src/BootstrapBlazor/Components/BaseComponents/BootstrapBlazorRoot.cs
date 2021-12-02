@@ -62,6 +62,46 @@ namespace BootstrapBlazor.Components
         {
             var index = 0;
 
+            if (OperatingSystem.IsBrowser())
+            {
+                builder.AddContent(index++, RenderChildContent());
+            }
+            else
+            {
+                builder.OpenElement(index++, "app");
+                builder.AddContent(index++, RenderChildContent());
+                builder.CloseElement();
+            }
+
+            builder.OpenComponent<Dialog>(index++);
+            builder.CloseComponent();
+
+            builder.OpenComponent<Download>(index++);
+            builder.CloseComponent();
+
+            builder.OpenComponent<FullScreen>(index++);
+            builder.CloseComponent();
+
+            builder.OpenComponent<Message>(index++);
+            builder.AddComponentReferenceCapture(index++, com => MessageContainer = (Message)com);
+            builder.CloseComponent();
+
+            builder.OpenComponent<PopoverConfirm>(index++);
+            builder.CloseComponent();
+
+            builder.OpenComponent<Print>(index++);
+            builder.CloseComponent();
+
+            builder.OpenComponent<SweetAlert>(index++);
+            builder.CloseComponent();
+
+            builder.OpenComponent<Title>(index++);
+            builder.CloseComponent();
+
+            builder.OpenComponent<Toast>(index++);
+            builder.AddComponentReferenceCapture(index++, com => ToastContainer = (Toast)com);
+            builder.CloseComponent();
+
 
             RenderFragment RenderChildContent() => builder =>
             {
