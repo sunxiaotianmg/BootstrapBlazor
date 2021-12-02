@@ -24,11 +24,13 @@ namespace BootstrapBlazor.Components
         [NotNull]
         private ICacheManager? Cache { get; set; }
 
+#if NET5_0
         /// <summary>
         /// 获得/设置 自组件
         /// </summary>
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
+#endif
 
         /// <summary>
         /// 获得 Message 组件实例
