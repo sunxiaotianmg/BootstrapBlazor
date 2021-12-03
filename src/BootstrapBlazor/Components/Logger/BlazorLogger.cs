@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BootstrapBlazor.Components
@@ -30,14 +29,14 @@ namespace BootstrapBlazor.Components
         /// </summary>
         [Inject]
         [NotNull]
-        public ILogger<BlazorLogger>? Logger { get; set; }
+        private ILogger<BlazorLogger>? Logger { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Inject]
         [NotNull]
-        public IConfiguration? Configuration { get; set; }
+        private IConfiguration? Configuration { get; set; }
 
 #if NET5_0
         /// <summary>
@@ -81,6 +80,12 @@ namespace BootstrapBlazor.Components
         private ToastService? ToastService { get; set; }
 
         /// <summary>
+        /// 获得/设置 是否显示弹窗 默认 true 显示
+        /// </summary>
+        [Parameter]
+        public bool ShowToast { get; set; }
+
+        /// <summary>
         /// OnErrorAsync 方法
         /// </summary>
         /// <param name="exception"></param>
@@ -89,7 +94,12 @@ namespace BootstrapBlazor.Components
         protected override async Task OnErrorAsync(Exception exception)
         {
             await ErrorBoundaryLogger.LogErrorAsync(exception);
-            await ToastService.Error("App", exception.Message);
+            Log(exception);
+
+            if (ShowToast)
+            {
+                await ToastService.Error("App", exception.Message);
+            }
         }
 
         /// <summary>
@@ -132,57 +142,10 @@ namespace BootstrapBlazor.Components
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="logLevel"></param>
-        /// <param name="message"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public Task Log(LogLevel logLevel, string message, params object[] args)
-        {
-            Logger.Log(logLevel, message, args);
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="logLevel"></param>
         /// <param name="exception"></param>
-        /// <param name="message"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public Task Log(LogLevel logLevel, Exception exception, string message = "", params object[] args)
+        public Task Log(Exception exception)
         {
-            var logger = new StringBuilder();
-            var infos = Configuration.GetEnvironmentInformation();
-            foreach (string key in infos)
-            {
-                logger.AppendFormat("{0}: {1}", key, infos[key]);
-                logger.AppendLine();
-            }
-            if (!string.IsNullOrEmpty(message))
-            {
-                logger.AppendFormat("{0}: {1}", "Message", message);
-                logger.AppendLine();
-            }
-
-            logger.AppendFormat("{0}: {1}", "Exception", exception.Message);
-            logger.AppendLine();
-
-            logger.Append(new string('*', 45));
-            Logger.Log(logLevel, exception, logger.ToString(), args);
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="logLevel"></param>
-        /// <param name="exception"></param>
-        /// <param name="collection"></param>
-        /// <returns></returns>
-        public Task Log(LogLevel logLevel, Exception exception, NameValueCollection? collection = null)
-        {
-            Logger.Log(logLevel, FormatException(exception, collection));
+            Logger.LogError(FormatException(exception));
             return Task.CompletedTask;
         }
 
