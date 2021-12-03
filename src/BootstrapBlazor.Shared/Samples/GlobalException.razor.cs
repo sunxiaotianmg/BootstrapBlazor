@@ -31,7 +31,7 @@ namespace BootstrapBlazor.Shared.Samples
             }
             catch (Exception ex)
             {
-                Trace.Log(Logger.FormatException(ex).Replace(Environment.NewLine, "<br />"), true);
+                Trace.Log(ex.Format().Replace(Environment.NewLine, "<br />"), true);
 
                 // 输出到消息中心
                 Logger.Log(ex);
