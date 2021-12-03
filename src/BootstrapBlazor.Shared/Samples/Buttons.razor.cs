@@ -45,7 +45,6 @@ namespace BootstrapBlazor.Shared.Samples
         private void ButtonClick(MouseEventArgs e)
         {
             Trace.Log($"Button Clicked");
-            throw new System.Exception("just a test exception");
         }
 
         private string ButtonText { get; set; } = "";
