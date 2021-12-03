@@ -1,0 +1,30 @@
+﻿@inherits ComponentBase
+@namespace BootstrapBlazor.Components
+
+@if (OperatingSystem.IsBrowser())
+{
+    @RenderChildContent
+}
+else
+{
+    <app>
+        @RenderChildContent
+    </app>
+}
+
+<Dialog />
+<Download />
+<FullScreen />
+<Message @ref="MessageContainer" />
+<PopoverConfirm />
+<Print />
+<SweetAlert />
+<Title />
+<Toast @ref="ToastContainer" />
+
+@code {
+    RenderFragment RenderChildContent =>
+    @<CascadingValue Value="this" IsFixed="true">
+        @ChildContent
+    </CascadingValue>;
+}
