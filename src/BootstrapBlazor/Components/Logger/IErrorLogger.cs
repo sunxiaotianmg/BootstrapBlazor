@@ -10,7 +10,7 @@ namespace BootstrapBlazor.Components
     /// <summary>
     /// 
     /// </summary>
-    public interface IBlazorLogger
+    public interface IErrorLogger
     {
         /// <summary>
         /// 
