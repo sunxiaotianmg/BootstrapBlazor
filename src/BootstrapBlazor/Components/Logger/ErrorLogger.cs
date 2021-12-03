@@ -82,7 +82,8 @@ namespace BootstrapBlazor.Components
 #if DEBUG
             if (Exception != null || CurrentException != null)
             {
-                builder.AddAttribute(3, nameof(CascadingValue<IErrorLogger>.ChildContent), ErrorContent?.Invoke(Exception ?? CurrentException) ?? ChildContent);
+                var ex = Exception ?? CurrentException;
+                builder.AddAttribute(3, nameof(CascadingValue<IErrorLogger>.ChildContent), ErrorContent?.Invoke(ex!) ?? ChildContent);
             }
             else
             {

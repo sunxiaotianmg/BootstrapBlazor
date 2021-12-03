@@ -40,8 +40,6 @@ namespace BootstrapBlazor.Components
         /// </summary>
         protected bool IsNotRender { get; set; }
 
-        private Exception? CurrentException { get; set; }
-
         private async Task CallStateHasChangedOnAsyncCompletion(Task task)
         {
             try
