@@ -219,32 +219,30 @@ namespace BootstrapBlazor.Components
             if (!firstRender && Tooltip != null)
             {
                 var id = RetrieveId();
-                if (!string.IsNullOrEmpty(id))
+                if (_prevDisable != IsDisabled)
                 {
-                    if (_prevDisable != IsDisabled)
+                    _prevDisable = IsDisabled;
+                    if (IsDisabled)
                     {
-                        _prevDisable = IsDisabled;
-                        if (IsDisabled)
+                        // TODO: id 不可为空整理 主要是 AvatarUpload 的 Id 处理
+                        if (Tooltip.PopoverType == PopoverType.Tooltip)
                         {
-                            if (Tooltip.PopoverType == PopoverType.Tooltip)
-                            {
-                                await JSRuntime.InvokeVoidAsync(null, "bb_tooltip", id, "dispose");
-                            }
-                            else
-                            {
-                                await JSRuntime.InvokeVoidAsync(null, "bb_popover", id, "dispose");
-                            }
+                            await JSRuntime.InvokeVoidAsync(null, "bb_tooltip", id!, "dispose");
                         }
                         else
                         {
-                            if (Tooltip.PopoverType == PopoverType.Tooltip)
-                            {
-                                await ShowTooltip();
-                            }
-                            else
-                            {
-                                await ShowPopover();
-                            }
+                            await JSRuntime.InvokeVoidAsync(null, "bb_popover", id!, "dispose");
+                        }
+                    }
+                    else
+                    {
+                        if (Tooltip.PopoverType == PopoverType.Tooltip)
+                        {
+                            await ShowTooltip();
+                        }
+                        else
+                        {
+                            await ShowPopover();
                         }
                     }
                 }
