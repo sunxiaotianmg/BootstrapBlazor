@@ -88,8 +88,6 @@ namespace BootstrapBlazor.Components
         /// <exception cref="NotImplementedException"></exception>
         protected override async Task OnErrorAsync(Exception exception)
         {
-            Recover();
-
             await ErrorBoundaryLogger.LogErrorAsync(exception);
             await ToastService.Error("App", exception.Message);
         }
@@ -116,6 +114,18 @@ namespace BootstrapBlazor.Components
                 };
             }
 #endif
+        }
+#endif
+
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// OnParametersSet 方法
+        /// </summary>
+        protected override void OnParametersSet()
+        {
+            base.OnParametersSet();
+
+            Recover();
         }
 #endif
 
