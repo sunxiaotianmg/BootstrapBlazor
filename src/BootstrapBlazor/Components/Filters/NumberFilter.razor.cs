@@ -12,13 +12,13 @@ namespace BootstrapBlazor.Components
     /// <summary>
     /// 数字类型过滤条件
     /// </summary>
-    public partial class NumberFilter<TValue>
+    public partial class NumberFilter<TType>
     {
-        private TValue? Value1 { get; set; }
+        private TType? Value1 { get; set; }
 
         private FilterAction Action1 { get; set; } = FilterAction.GreaterThanOrEqual;
 
-        private TValue? Value2 { get; set; }
+        private TType? Value2 { get; set; }
 
         private FilterAction Action2 { get; set; } = FilterAction.LessThanOrEqual;
 
