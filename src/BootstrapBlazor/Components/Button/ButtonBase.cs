@@ -219,29 +219,32 @@ namespace BootstrapBlazor.Components
             if (!firstRender && Tooltip != null)
             {
                 var id = RetrieveId();
-                if (!string.IsNullOrEmpty(id) && _prevDisable != IsDisabled)
+                if (!string.IsNullOrEmpty(id))
                 {
-                    _prevDisable = IsDisabled;
-                    if (IsDisabled)
+                    if (_prevDisable != IsDisabled)
                     {
-                        if (Tooltip.PopoverType == PopoverType.Tooltip)
+                        _prevDisable = IsDisabled;
+                        if (IsDisabled)
                         {
-                            await JSRuntime.InvokeVoidAsync(null, "bb_tooltip", id, "dispose");
+                            if (Tooltip.PopoverType == PopoverType.Tooltip)
+                            {
+                                await JSRuntime.InvokeVoidAsync(null, "bb_tooltip", id, "dispose");
+                            }
+                            else
+                            {
+                                await JSRuntime.InvokeVoidAsync(null, "bb_popover", id, "dispose");
+                            }
                         }
                         else
                         {
-                            await JSRuntime.InvokeVoidAsync(null, "bb_popover", id, "dispose");
-                        }
-                    }
-                    else
-                    {
-                        if (Tooltip.PopoverType == PopoverType.Tooltip)
-                        {
-                            await ShowTooltip();
-                        }
-                        else
-                        {
-                            await ShowPopover();
+                            if (Tooltip.PopoverType == PopoverType.Tooltip)
+                            {
+                                await ShowTooltip();
+                            }
+                            else
+                            {
+                                await ShowPopover();
+                            }
                         }
                     }
                 }
