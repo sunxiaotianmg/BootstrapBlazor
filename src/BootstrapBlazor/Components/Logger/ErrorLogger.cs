@@ -54,16 +54,16 @@ namespace BootstrapBlazor.Components
         /// </summary>
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected Exception? CurrentException { get; private set; }
 #else
         [Inject]
         [NotNull]
         private IErrorBoundaryLogger? ErrorBoundaryLogger { get; set; }
 #endif
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected Exception? Exception { get; set; }
 
         private bool ShowErrorDetails { get; set; }
 
@@ -80,9 +80,9 @@ namespace BootstrapBlazor.Components
             builder.AddAttribute(3, nameof(CascadingValue<IErrorLogger>.ChildContent), ChildContent);
 #else
 #if DEBUG
-            if (CurrentException != null)
+            if (Exception != null || CurrentException != null)
             {
-                builder.AddAttribute(3, nameof(CascadingValue<IErrorLogger>.ChildContent), ErrorContent?.Invoke(CurrentException) ?? ChildContent);
+                builder.AddAttribute(3, nameof(CascadingValue<IErrorLogger>.ChildContent), ErrorContent?.Invoke(Exception ?? CurrentException) ?? ChildContent);
             }
             else
             {
@@ -119,17 +119,18 @@ namespace BootstrapBlazor.Components
 #endif
         }
 
-#if NET6_0_OR_GREATER
         /// <summary>
         /// OnParametersSet 方法
         /// </summary>
         protected override void OnParametersSet()
         {
             base.OnParametersSet();
+            Exception = null;
 
+#if NET6_0_OR_GREATER
             Recover();
-        }
 #endif
+        }
 
         /// <summary>
         /// 
@@ -142,9 +143,7 @@ namespace BootstrapBlazor.Components
 
             if (ShowErrorDetails)
             {
-#if NET5_0
-                CurrentException = exception;
-#endif
+                Exception = exception;
                 StateHasChanged();
             }
         }
