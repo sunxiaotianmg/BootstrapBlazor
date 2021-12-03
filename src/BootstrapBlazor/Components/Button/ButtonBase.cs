@@ -103,7 +103,7 @@ namespace BootstrapBlazor.Components
         public string? Text { get; set; }
 
         /// <summary>
-        /// 获得/设置 Outline 样式
+        /// 获得/设置 Outline 样式 默认 false
         /// </summary>
         [Parameter]
         public bool IsOutline { get; set; }
