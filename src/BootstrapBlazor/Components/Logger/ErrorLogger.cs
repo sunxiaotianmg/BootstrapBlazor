@@ -59,13 +59,13 @@ namespace BootstrapBlazor.Components
         /// 
         /// </summary>
         protected Exception? CurrentException { get; private set; }
-
-        private bool ShowErrorDetails { get; set; }
 #else
         [Inject]
         [NotNull]
         private IErrorBoundaryLogger? ErrorBoundaryLogger { get; set; }
 #endif
+
+        private bool ShowErrorDetails { get; set; }
 
         /// <summary>
         /// BuildRenderTree 方法
@@ -139,9 +139,12 @@ namespace BootstrapBlazor.Components
         public async Task HandlerExceptionAsync(Exception exception)
         {
             await OnErrorAsync(exception);
+
             if (ShowErrorDetails)
             {
+#if NET5_0
                 CurrentException = exception;
+#endif
                 StateHasChanged();
             }
         }
