@@ -17,6 +17,6 @@ namespace BootstrapBlazor.Components
         /// </summary>
         /// <param name="ex"></param>
         /// <returns></returns>
-        Task Log(Exception ex);
+        Task HandlerExceptionAsync(Exception ex);
     }
 }

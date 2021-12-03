@@ -19,8 +19,8 @@ namespace BootstrapBlazor.Components
     /// </summary>
     public class ErrorLogger
 #if NET5_0
-        : BootstrapComponentBase, IErrorLogger
-#elif NET6_0_OR_GREATER
+        : ComponentBase, IErrorLogger
+#else
         : ErrorBoundaryBase, IErrorLogger
 #endif
     {
@@ -38,12 +38,33 @@ namespace BootstrapBlazor.Components
         [NotNull]
         private IConfiguration? Configuration { get; set; }
 
+        [Inject]
+        [NotNull]
+        private ToastService? ToastService { get; set; }
+
+        /// <summary>
+        /// 获得/设置 是否显示弹窗 默认 true 显示
+        /// </summary>
+        [Parameter]
+        public bool ShowToast { get; set; } = true;
+
 #if NET5_0
         /// <summary>
         /// 
         /// </summary>
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected Exception? CurrentException { get; private set; }
+
+        private bool ShowErrorDetails { get; set; }
+#else
+        [Inject]
+        [NotNull]
+        private IErrorBoundaryLogger? ErrorBoundaryLogger { get; set; }
 #endif
 
         /// <summary>
@@ -57,7 +78,7 @@ namespace BootstrapBlazor.Components
             builder.AddAttribute(2, nameof(CascadingValue<IErrorLogger>.IsFixed), true);
 #if NET5_0
             builder.AddAttribute(3, nameof(CascadingValue<IErrorLogger>.ChildContent), ChildContent);
-#elif NET6_0_OR_GREATER
+#else
 #if DEBUG
             if (CurrentException != null)
             {
@@ -74,40 +95,6 @@ namespace BootstrapBlazor.Components
             builder.CloseComponent();
         }
 
-#if NET6_0_OR_GREATER
-        [Inject]
-        [NotNull]
-        private IErrorBoundaryLogger? ErrorBoundaryLogger { get; set; }
-
-        [Inject]
-        [NotNull]
-        private ToastService? ToastService { get; set; }
-
-        /// <summary>
-        /// 获得/设置 是否显示弹窗 默认 true 显示
-        /// </summary>
-        [Parameter]
-        public bool ShowToast { get; set; } = true;
-
-        /// <summary>
-        /// OnErrorAsync 方法
-        /// </summary>
-        /// <param name="exception"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        protected override async Task OnErrorAsync(Exception exception)
-        {
-            if (ShowToast)
-            {
-                await ToastService.Error("Application Error", exception.Message);
-            }
-
-            await ErrorBoundaryLogger.LogErrorAsync(exception);
-            await Log(exception);
-        }
-
-        private bool ShowErrorDetails { get; set; }
-
         /// <summary>
         /// OnInitialized 方法
         /// </summary>
@@ -117,6 +104,7 @@ namespace BootstrapBlazor.Components
 
             ShowErrorDetails = Configuration.GetValue<bool>("DetailedErrors", false);
 
+#if NET6_0_OR_GREATER
             if (ErrorContent == null && ShowErrorDetails)
             {
                 ErrorContent = ex => builder =>
@@ -128,8 +116,8 @@ namespace BootstrapBlazor.Components
                     builder.CloseElement();
                 };
             }
-        }
 #endif
+        }
 
 #if NET6_0_OR_GREATER
         /// <summary>
@@ -147,10 +135,37 @@ namespace BootstrapBlazor.Components
         /// 
         /// </summary>
         /// <param name="exception"></param>
-        public Task Log(Exception exception)
+        /// <returns></returns>
+        public async Task HandlerExceptionAsync(Exception exception)
         {
+            await OnErrorAsync(exception);
+            if (ShowErrorDetails)
+            {
+                CurrentException = exception;
+                StateHasChanged();
+            }
+        }
+
+        /// <summary>
+        /// OnErrorAsync 方法
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <returns></returns>
+#if NET5_0
+        protected async Task OnErrorAsync(Exception exception)
+#else
+        protected override async Task OnErrorAsync(Exception exception)
+#endif
+        {
+            if (ShowToast)
+            {
+                await ToastService.Error("Application Error", exception.Message);
+            }
+
+#if NET6_0_OR_GREATER
+            await ErrorBoundaryLogger.LogErrorAsync(exception);
+#endif
             Logger.LogError(FormatException(exception));
-            return Task.CompletedTask;
         }
 
         /// <summary>
