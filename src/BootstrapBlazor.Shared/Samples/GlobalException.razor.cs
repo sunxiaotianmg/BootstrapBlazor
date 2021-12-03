@@ -15,11 +15,11 @@ namespace BootstrapBlazor.Shared.Samples
     /// </summary>
     public partial class GlobalException
     {
-        private void OnClick()
+        private static void OnClick()
         {
             // NET6.0 采用 ErrorLogger 统一处理
             var a = 0;
-            var b = 1 / a;
+            _ = 1 / a;
         }
 
         /// <summary>
