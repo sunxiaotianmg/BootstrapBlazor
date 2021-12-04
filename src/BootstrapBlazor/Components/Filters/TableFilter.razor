@@ -3,10 +3,7 @@
 
 @if (IsHeaderRow)
 {
-    @if (Column != null)
-    {
-        @RenderFilter(Column)
-    }
+    @RenderFilter(Column)
 }
 else
 {
@@ -14,10 +11,7 @@ else
         <div class="card-arrow"></div>
         <div class="card-header"><span>@Title</span></div>
         <div class="card-body">
-            @if (Column != null)
-            {
-                @RenderFilter(Column)
-            }
+            @RenderFilter(Column)
         </div>
         <div class="card-footer">
             <div class="d-flex flex-fill">
@@ -56,22 +50,22 @@ else
                         <DateTimeFilter Count="Count" />
                         break;
                     case nameof(Int16):
-                        <NumberFilter TType="Int16" Count="@Count" />
+                        <NumberFilter TType="Int16" Count="@Count" Step="@Step" />
                         break;
                     case nameof(Int32):
-                        <NumberFilter TType="Int32" Count="@Count" />
+                        <NumberFilter TType="Int32" Count="@Count" Step="@Step" />
                         break;
                     case nameof(Int64):
-                        <NumberFilter TType="Int64" Count="@Count" />
+                        <NumberFilter TType="Int64" Count="@Count" Step="@Step" />
                         break;
                     case nameof(Single):
-                        <NumberFilter TType="Single" Count="@Count" />
+                        <NumberFilter TType="Single" Count="@Count" Step="@Step" />
                         break;
                     case nameof(Double):
-                        <NumberFilter TType="Double" Count="@Count" />
+                        <NumberFilter TType="Double" Count="@Count" Step="@Step" />
                         break;
                     case nameof(Decimal):
-                        <NumberFilter TType="Decimal" Count="@Count" />
+                        <NumberFilter TType="Decimal" Count="@Count" Step="@Step" />
                         break;
                     case nameof(String):
                         <StringFilter Count="Count" />
