@@ -663,9 +663,8 @@ namespace BootstrapBlazor.Components
             }
         }
 
-        private RenderFragment? RenderTabItemContent(RenderFragment? content) => Layout == null
-            ? content
-            : builder =>
+        private RenderFragment? RenderTabItemContent(RenderFragment? content) => Layout != null && Layout.IsErrorHandler
+            ? builder =>
             {
                 var index = 0;
                 builder.OpenComponent<ErrorLogger>(index++);
@@ -675,6 +674,7 @@ namespace BootstrapBlazor.Components
                 }
                 builder.AddAttribute(index++, nameof(BootstrapBlazor.Components.ErrorLogger.ChildContent), content);
                 builder.CloseComponent();
-            };
+            }
+            : content;
     }
 }
