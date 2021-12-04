@@ -108,6 +108,8 @@ namespace BootstrapBlazor.Components
         [NotNull]
         private IStringLocalizer<TableFilter>? Localizer { get; set; }
 
+        private string? Step => Column.Step?.ToString() ?? "0.01";
+
         /// <summary>
         /// OnInitialized 方法
         /// </summary>
