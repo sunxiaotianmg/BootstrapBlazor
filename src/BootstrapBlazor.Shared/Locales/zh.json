@@ -433,7 +433,7 @@
     "ExceptionTestIntroduce": "本例代码中写了一个除以零的错误代码，并且未使用 <code>try/catch</code> 对异常进行捕获，系统并不会崩溃导致不可用，<ul class='ul-demo'><li><code>Debug</code> 模式下会显示错误的 <b>描述信息</b> 与 <b>堆栈信息</b></li><li><code>Release</code> 模式下默认使用 <code>Toast</code> 进行弹窗提示</li></ul><div>可通过设置 <code>ErrorContent</code> 对 <b>异常信息</b> 进行自定义布局显示</div>",
     "ButtonText": "测试",
     "Block2Title": "自定义错误处理",
-    "Block2Intro": "通过设置 <code>OnErrorHandleAsync</code> 回调方法，设置自定义异常处理逻辑",
+    "Block2Intro": "通过设置 <code>OnErrorHandleAsync</code> 回调方法，设置自定义异常处理逻辑"
   },
   "BootstrapBlazor.Shared.Samples.Splits": {
     "Title": "Split 面板分割",
@@ -2129,6 +2129,16 @@
     "Enum": "枚举",
     "Collection": "集合",
     "Arr": "数组"
+  },
+  "BootstrapBlazor.Shared.Samples.GroupBoxs": {
+    "Title": "GroupBox 集合组件",
+    "SubTitle": "模拟 WinForm 的 GroupBox 组件",
+    "BasicUsageTitle": "基础用法",
+    "BasicUsageIntro": "将自己的组件放到 <code>GroupBox</code> 内部即可",
+    "GroupTitle": "表单示例",
+    "GroupP1": "我是 <code>GroupBox</code> 示例",
+    "GroupP2": "更多示例请参考 <code>EditorForms</code> 表单示例 <a href='editorforms' target='_blank'>[传送门]</a>",
+    "AttTitle": "设置组件标题"
   },
   "BootstrapBlazor.Shared.Components.DemoBlock": {
     "Title": "未设置",
