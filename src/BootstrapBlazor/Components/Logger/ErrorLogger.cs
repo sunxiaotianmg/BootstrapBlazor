@@ -71,6 +71,13 @@ namespace BootstrapBlazor.Components
         /// </summary>
         [Parameter]
         public RenderFragment? ChildContent { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Parameter]
+        [NotNull]
+        public RenderFragment<Exception>? ErrorContent { get; set; }
 #else
         [Inject]
         [NotNull]
@@ -95,10 +102,9 @@ namespace BootstrapBlazor.Components
 
             ShowErrorDetails = Configuration.GetValue<bool>("DetailedErrors", false);
 
-#if NET6_0_OR_GREATER
-            if (ErrorContent == null && ShowErrorDetails)
+            if (ShowErrorDetails)
             {
-                ErrorContent = ex => builder =>
+                ErrorContent ??= ex => builder =>
                 {
                     var index = 0;
                     builder.OpenElement(index++, "div");
@@ -107,7 +113,6 @@ namespace BootstrapBlazor.Components
                     builder.CloseElement();
                 };
             }
-#endif
         }
 
         /// <summary>
@@ -132,23 +137,20 @@ namespace BootstrapBlazor.Components
             builder.OpenComponent<CascadingValue<IErrorLogger>>(0);
             builder.AddAttribute(1, nameof(CascadingValue<IErrorLogger>.Value), this);
             builder.AddAttribute(2, nameof(CascadingValue<IErrorLogger>.IsFixed), true);
-#if NET5_0
-            builder.AddAttribute(3, nameof(CascadingValue<IErrorLogger>.ChildContent), ChildContent);
-#else
+
+            var content = ChildContent;
 #if DEBUG
-            if (Exception != null || CurrentException != null)
-            {
-                var ex = Exception ?? CurrentException;
-                builder.AddAttribute(3, nameof(CascadingValue<IErrorLogger>.ChildContent), ErrorContent?.Invoke(ex!) ?? ChildContent);
-            }
-            else
-            {
-                builder.AddAttribute(4, nameof(CascadingValue<IErrorLogger>.ChildContent), ChildContent);
-            }
+#if NET5_0
+            var ex = Exception;
 #else
-            builder.AddAttribute(4, nameof(CascadingValue<IErrorLogger>.ChildContent), ChildContent);
+            var ex = Exception ?? CurrentException;
 #endif
+            if (ex != null)
+            {
+                content = ErrorContent.Invoke(ex);
+            }
 #endif
+            builder.AddAttribute(3, nameof(CascadingValue<IErrorLogger>.ChildContent), content);
             builder.CloseComponent();
         }
 
