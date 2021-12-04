@@ -84,7 +84,7 @@ else
                     if (item != null)
                     {
                         <div class="@GetContentClassString(item)">
-                            @item.ChildContent
+                            @RenderTabItemContent(item.ChildContent)
                         </div>
                     }
                 }
@@ -93,7 +93,7 @@ else
                     foreach (var item in Items)
                     {
                         <div @key="@item" class="@GetContentClassString(item)">
-                            @item.ChildContent
+                            @RenderTabItemContent(item.ChildContent)
                         </div>
                     }
                 }
