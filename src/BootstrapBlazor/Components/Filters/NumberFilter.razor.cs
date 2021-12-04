@@ -30,6 +30,12 @@ namespace BootstrapBlazor.Components
         private IEnumerable<SelectedItem>? Items { get; set; }
 
         /// <summary>
+        /// 获得/设置 步长 默认 0.01
+        /// </summary>
+        [Parameter]
+        public string Step { get; set; } = "0.01";
+
+        /// <summary>
         /// OnInitialized 方法
         /// </summary>
         protected override void OnInitialized()
