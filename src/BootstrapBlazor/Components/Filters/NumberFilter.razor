@@ -5,7 +5,7 @@
 @if (IsHeaderRow)
 {
     <div class="@FilterRowClassString">
-        @if (typeof(TType) == typeof(Single) || typeof(TType) == typeof(Decimal) || typeof(TType) == typeof(Double))
+        @if (typeof(TType).IsNumber())
         {
             <BootstrapInputNumber @bind-Value="@Value1" ShowLabel="false" OnValueChanged="_ => OnFilterValueChanged()" Step="0.01"></BootstrapInputNumber>
         }
@@ -20,7 +20,7 @@ else
 {
     <Select Items="@Items" @bind-Value="@Action1"></Select>
 
-    @if (typeof(TType) == typeof(Single) || typeof(TType) == typeof(Decimal) || typeof(TType) == typeof(Double))
+    @if (typeof(TType).IsNumber())
     {
         <BootstrapInputNumber @bind-Value="@Value1" ShowLabel="false" Step="0.01"></BootstrapInputNumber>
     }
@@ -35,7 +35,7 @@ else
 
         <Select Items="@Items" @bind-Value="@Action2"></Select>
 
-        @if (typeof(TType) == typeof(Single) || typeof(TType) == typeof(Decimal) || typeof(TType) == typeof(Double))
+        @if (typeof(TType).IsNumber())
         {
             <BootstrapInputNumber @bind-Value="@Value1" ShowLabel="false" Step="0.01"></BootstrapInputNumber>
         }
