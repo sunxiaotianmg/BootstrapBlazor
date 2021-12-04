@@ -39,6 +39,12 @@ namespace BootstrapBlazor.Components
         [Parameter]
         public object? Resource { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [Parameter]
+        public IErrorLogger? ErrorLogger { get; set; }
+
         [CascadingParameter]
         private Task<AuthenticationState>? AuthenticationState { get; set; }
 
@@ -75,11 +81,15 @@ namespace BootstrapBlazor.Components
             // 判断是否开启权限
             if (Authorized && RouteContext.Handler != null)
             {
-                var index = 0;
-                builder.OpenComponent(index++, RouteContext.Handler);
-                foreach (var kv in (RouteContext.Parameters ?? new ReadOnlyDictionary<string, object>(new Dictionary<string, object>())))
+                if (ErrorLogger != null)
                 {
-                    builder.AddAttribute(index++, kv.Key, kv.Value);
+                    builder.OpenComponent<CascadingValue<IErrorLogger>>(0);
+                    BuildComponent(RouteContext.Handler);
+                    builder.CloseComponent();
+                }
+                else
+                {
+                    BuildComponent(RouteContext.Handler);
                 }
 #if NET6_0_OR_GREATER
                 BuildQueryParameters();
@@ -89,6 +99,16 @@ namespace BootstrapBlazor.Components
             else
             {
                 builder.AddContent(0, NotAuthorized);
+            }
+
+            void BuildComponent(Type componentType)
+            {
+                var index = 10;
+                builder.OpenComponent(index++, componentType);
+                foreach (var kv in (RouteContext.Parameters ?? new ReadOnlyDictionary<string, object>(new Dictionary<string, object>())))
+                {
+                    builder.AddAttribute(index++, kv.Key, kv.Value);
+                }
             }
 
 #if NET6_0_OR_GREATER
