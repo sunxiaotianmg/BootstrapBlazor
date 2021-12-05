@@ -94,6 +94,7 @@ namespace UnitTest.Components
 
             // 搜索按钮
             var search = false;
+            option.DialogBodyTemplate = foo => builder => builder.AddContent(0, foo.Name);
             option.OnSearchClick = () =>
             {
                 search = true;
