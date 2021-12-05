@@ -141,7 +141,7 @@ namespace UnitTest.Components
             };
             editOption.Items = new IEditorItem[]
             {
-                new MockEditorItem()
+                new AutoGenerateColumnAttribute()
             };
             cut.InvokeAsync(() => dialog.ShowEditDialog(editOption));
             var form = cut.Find("form");
@@ -155,7 +155,50 @@ namespace UnitTest.Components
             #endregion
 
             #region ShowModal
+            var result = false;
+            var resultOption = new ResultDialogOption()
+            {
+                ComponentParamters = new Dictionary<string, object>()
+                {
+                    [nameof(MockModalDialog.Value)] = result,
+                    [nameof(MockModalDialog.ValueChanged)] = EventCallback.Factory.Create<bool>(this, b => result = b)
+                }
+            };
 
+            // 点击的是 Yes 按钮
+            cut.InvokeAsync(() => dialog.ShowModal<MockModalDialog>(resultOption));
+            button = cut.FindComponents<Button>().First(b => b.Instance.Text == "确认");
+            cut.InvokeAsync(() => button.Instance.OnClick.InvokeAsync());
+            Assert.True(result);
+
+            // 点击的是 No 按钮
+            result = true;
+            resultOption = new ResultDialogOption()
+            {
+                ComponentParamters = new Dictionary<string, object>()
+                {
+                    [nameof(MockModalDialog.Value)] = result,
+                    [nameof(MockModalDialog.ValueChanged)] = EventCallback.Factory.Create<bool>(this, b => result = b)
+                }
+            };
+            cut.InvokeAsync(() => dialog.ShowModal<MockModalDialog>(resultOption));
+            button = cut.FindComponents<Button>().First(b => b.Instance.Text == "取消");
+            cut.InvokeAsync(() => button.Instance.OnClick.InvokeAsync());
+            Assert.False(result);
+
+            // 点击关闭按钮
+            resultOption = new ResultDialogOption()
+            {
+                ComponentParamters = new Dictionary<string, object>()
+                {
+                    [nameof(MockModalDialog.Value)] = result,
+                    [nameof(MockModalDialog.ValueChanged)] = EventCallback.Factory.Create<bool>(this, b => result = b)
+                },
+                OnCloseAsync = () => Task.CompletedTask
+            };
+            cut.InvokeAsync(() => dialog.ShowModal<MockModalDialog>(resultOption));
+            button = cut.FindComponents<Button>().First(b => b.Instance.Text == "关闭");
+            cut.InvokeAsync(() => button.Instance.OnClick.InvokeAsync());
             #endregion
         }
 
@@ -166,33 +209,33 @@ namespace UnitTest.Components
             public DialogService? DialogService { get; set; }
         }
 
-        private class MockEditorItem : IEditorItem
+        private class MockModalDialog : ComponentBase, IResultDialog
         {
-            public MockEditorItem()
+            [Parameter]
+            public bool Value { get; set; }
+
+            [Parameter]
+            public EventCallback<bool> ValueChanged { get; set; }
+
+            public async Task OnClose(DialogResult result)
             {
-                PropertyType = typeof(string);
+                if (result == DialogResult.Yes)
+                {
+                    Value = true;
+                    if (ValueChanged.HasDelegate)
+                    {
+                        await ValueChanged.InvokeAsync(Value);
+                    }
+                }
+                else
+                {
+                    Value = false;
+                    if (ValueChanged.HasDelegate)
+                    {
+                        await ValueChanged.InvokeAsync(Value);
+                    }
+                }
             }
-
-            public System.Type PropertyType { get; }
-            public bool Editable { get; set; }
-            public bool Readonly { get; set; }
-            public bool IsReadonlyWhenAdd { get; set; }
-            public bool IsReadonlyWhenEdit { get; set; }
-            public bool SkipValidate { get; set; }
-            public string? Text { get; set; }
-            public string? PlaceHolder { get; set; }
-            public IEnumerable<SelectedItem>? Items { get; set; }
-            public object? Step { get; set; }
-            public int Rows { get; set; }
-            public RenderFragment<object>? EditTemplate { get; set; }
-            public System.Type? ComponentType { get; set; }
-            public IEnumerable<KeyValuePair<string, object>>? ComponentParameters { get; set; }
-            public IEnumerable<SelectedItem>? Lookup { get; set; }
-            public List<IValidator>? ValidateRules { get; set; }
-
-            public string? GetDisplayName() => Text;
-
-            public string GetFieldName() => Text ?? "Name";
         }
     }
 }
