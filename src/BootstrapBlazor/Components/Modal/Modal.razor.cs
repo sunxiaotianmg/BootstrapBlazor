@@ -183,11 +183,6 @@ namespace BootstrapBlazor.Components
         }
 
         /// <summary>
-        /// 更新 UI
-        /// </summary>
-        internal void Render() => StateHasChanged();
-
-        /// <summary>
         /// 内部使用如果还有弹窗继续显示，如果没有弹窗关闭所有
         /// </summary>
         /// <returns></returns>
