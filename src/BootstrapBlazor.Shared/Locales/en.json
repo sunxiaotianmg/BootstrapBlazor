@@ -2127,6 +2127,78 @@
     "Collection": "Collection",
     "Arr": "Array"
   },
+  "BootstrapBlazor.Shared.Samples.DropdownWidgets": {
+    "Title": "DropdownWidget",
+    "SubTitle": "More for head information summary presentation",
+    "BasicUsageTitle": "Basic usage",
+    "BasicUsageIntro": "Write pendant content directly on the page through <code>childContent </code>",
+    "BasicUsageMessage": "You have 4 unread messages",
+    "BasicUsageViewMessage": "View all messages",
+    "BasicUsageNotify": "You have 10 unread notifications",
+    "BasicUsageViewNotify": "View all notifications",
+    "BasicUsageTasks": "You have 3 tasks",
+    "BasicUsageViewTasks": "View all tasks",
+    "AttrTitle": "DropdownWidgetItem",
+    "Icon": "Widget icon",
+    "BadgeColor": "Badge color",
+    "HeaderColor": "Header color",
+    "BadgeNumber": "The number of badges displayed",
+    "ShowArrow": "Whether to display a small arrow",
+    "MenuAlignment": "Menu alignment",
+    "HeaderTemplate": "Header template",
+    "BodyTemplate": "Body template",
+    "FooterTemplate": "Footer template"
+  },
+  "BootstrapBlazor.Shared.Samples.Empties": {
+    "Title": "Empty",
+    "SubTitle": "Sub Title PlaceHolder",
+    "BasicUsageTitle": "Basic usage",
+    "BasicUsageIntro": "Just add <code> Empty </code> tag",
+    "ImageTitle": "Set the path to the empty state picture",
+    "ImageIntro": "Just set the <code>Image </code> property",
+    "ImageText": "No data at this time",
+    "TemplateTitle": "Customize the empty state template",
+    "TemplateIntro": "The inner set renders custom components <code> Template </code> labels",
+    "TemplateIButtonText": "Go back to the previous page",
+    "Image": "Customize the picture path",
+    "Text": "Custom description information",
+    "TextDefaultValue": "There is no description at this time",
+    "Width": "Customize the width of the picture",
+    "Height": "Customize the height of the picture",
+    "Template": "Custom templates",
+    "ChildContent": "ChildContent"
+  },
+  "BootstrapBlazor.Shared.Samples.GroupBoxs": {
+    "Title": "GroupBox",
+    "SubTitle": "Simulate WinForm's GroupBox components",
+    "BasicUsageTitle": "Basic usage",
+    "BasicUsageIntro": "Put your own components inside the <code> GroupBox </code>",
+    "GroupTitle": "An example of a form",
+    "GroupP1": "I'm an example of <code> GroupBox </code>",
+    "GroupP2": "For more examples, please refer to the <code> EditorForms </code> Form Example < a href'editorforms' target'_blank'> the portal </a>",
+    "AttTitle": "Set the component title"
+  },
+  "BootstrapBlazor.Shared.Samples.ListViews": {
+    "Title": "ListView",
+    "SubTitle": "Provides rule arrangement controls",
+    "BasicUsageTitle": "Basic usage",
+    "BasicUsageIntro": "Apply to a large number of duplicate data implementation rule arrangements",
+    "BasicUsageP1": "The <code> OnListViewItemClick </code> event is triggered when you click on the image",
+    "ProductListText": "The list of products",
+    "PaginationTitle": "Paginated display",
+    "PaginationIntro": "Set the <code> Pageable </code> display paginated components",
+    "GroupTitle": "Group display",
+    "GroupIntro": "Set up grouping <code> GroupName </code> data",
+    "Items": "Component data source",
+    "Pageable": "Whether to paginated",
+    "PageItemsSource": "The quantity data source is displayed per page",
+    "HeaderTemplate": "ListView Header template",
+    "BodyTemplate": "ListView Body template",
+    "FooterTemplate": "ListView Footer template",
+    "OnQueryAsync": "Asynchronous query callback method",
+    "OnListViewItemClick": "The ListView element calls back when it clicks on the delegate",
+    "QueryAsync": "Manually query data methods"
+  },
   "BootstrapBlazor.Shared.Components.DemoBlock": {
     "Title": "",
     "SubTitle": "Demo"
@@ -2416,10 +2488,6 @@
     "ChartBubble": "Bubble",
     "Transition": "Transition"
   },
-  "BootstrapBlazor.Shared.Samples.Empties": {
-    "Title": "Empty",
-    "SubTitle": "Sub Title PlaceHolder"
-  },
   "BootstrapBlazor.Shared.Samples.Table.TablesFooter": {
     "Left": "Left",
     "Center": "Center",
@@ -2480,6 +2548,12 @@
     "BaseUsageText": "Basic usage",
     "IntroText1": "Touch device handwritten signature as Base64.",
     "IntroText2": "For desktop browser testing, please use F12 to simulate a touch device.",
-    "HandwrittenButtonText": "Signature"
+    "HandwrittenButtonText": "Signature",
+    "SaveButtonText": "Save button text",
+    "SaveButtonTextDefaultValue": "Save",
+    "ClearButtonText": "Clear the button text",
+    "ClearButtonTextDefaultValue": "Clear",
+    "Result": "Handwritten signature imgBase64 string",
+    "HandwrittenBase64": "Handwritten result callback method"
   }
 }
