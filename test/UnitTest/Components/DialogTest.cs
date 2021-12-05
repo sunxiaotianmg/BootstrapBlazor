@@ -11,6 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using UnitTest.Core;
+using UnitTest.Extensions;
 using Xunit;
 
 namespace UnitTest.Components
@@ -139,10 +140,24 @@ namespace UnitTest.Components
                 saved = true;
                 return Task.FromResult(true);
             };
+
+            var model = new Foo() { Name = "Test" };
+            var parameters = new Dictionary<string, object>()
+            {
+                ["Field"] = "Name",
+                ["FieldExpression"] = model.GenerateValueExpression()
+            };
+#if NET5_0
+            var item = new EditorItem<string>();
+#else
+            var item = new EditorItem<Foo, string>();
+#endif
+            cut.InvokeAsync(() => item.SetParametersAsync(ParameterView.FromDictionary(parameters)));
             editOption.Items = new IEditorItem[]
             {
-                new AutoGenerateColumnAttribute()
+                item
             };
+            editOption.Model = model;
             cut.InvokeAsync(() => dialog.ShowEditDialog(editOption));
             var form = cut.Find("form");
             form.Submit();
@@ -189,6 +204,7 @@ namespace UnitTest.Components
             // 点击关闭按钮
             resultOption = new ResultDialogOption()
             {
+                ShowCloseButton = true,
                 ComponentParamters = new Dictionary<string, object>()
                 {
                     [nameof(MockModalDialog.Value)] = result,
