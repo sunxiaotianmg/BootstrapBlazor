@@ -2130,6 +2130,47 @@
     "Collection": "集合",
     "Arr": "数组"
   },
+  "BootstrapBlazor.Shared.Samples.DropdownWidgets": {
+    "Title": "DropdownWidget 下拉挂件",
+    "SubTitle": "多用于头部信息汇总展示",
+    "BasicUsageTitle": "基础用法",
+    "BasicUsageIntro": "直接在页面上通过 <code>ChildContent</code> 编写挂件内容",
+    "BasicUsageMessage": "您有 4 个未读消息",
+    "BasicUsageViewMessage": "查看所有消息",
+    "BasicUsageNotify": "您有 10 个未读通知",
+    "BasicUsageViewNotify": "查看所有通知",
+    "BasicUsageTasks": "您有 3 个任务",
+    "BasicUsageViewTasks": "查看所有任务",
+    "AttrTitle": "DropdownWidgetItem 组件",
+    "Icon": "挂件图标",
+    "BadgeColor": "徽章颜色",
+    "HeaderColor": "Header 颜色",
+    "BadgeNumber": "徽章显示数量",
+    "ShowArrow": "是否显示小箭头",
+    "MenuAlignment": "菜单对齐方式",
+    "HeaderTemplate": "Header 模板",
+    "BodyTemplate": "Body 模板",
+    "FooterTemplate": "Footer 模板"
+  },
+  "BootstrapBlazor.Shared.Samples.Empties": {
+    "Title": "Empty 空状态",
+    "SubTitle": "空状态时的展示占位图",
+    "BasicUsageTitle": "基本用法",
+    "BasicUsageIntro": "添加 <code>Empty</code> 标签即可",
+    "ImageTitle": "设置空状态图片路径",
+    "ImageIntro": "设置 <code>Image</code> 属性即可",
+    "ImageText": "暂无数据",
+    "TemplateTitle": "自定义空状态模板",
+    "TemplateIntro": "内套 <code>Template</code> 标签渲染自定义组件",
+    "TemplateIButtonText": "返回上一页",
+    "Image": "自定义图片路径",
+    "Text": "自定义描述信息",
+    "TextDefaultValue": "暂无描述",
+    "Width": "自定义图片宽度",
+    "Height": "自定义图片高度",
+    "Template": "自定义模板",
+    "ChildContent": "子组件"
+  },
   "BootstrapBlazor.Shared.Samples.GroupBoxs": {
     "Title": "GroupBox 集合组件",
     "SubTitle": "模拟 WinForm 的 GroupBox 组件",
@@ -2428,10 +2469,6 @@
     "ChartDoughnut": "圆环图",
     "ChartBubble": "气泡图",
     "Transition": "过渡效果 Transition"
-  },
-  "BootstrapBlazor.Shared.Samples.Empties": {
-    "Title": "Empty 空状态",
-    "SubTitle": "空状态时的展示占位图"
   },
   "BootstrapBlazor.Shared.Samples.Table.TablesFooter": {
     "Left": "左对齐",
