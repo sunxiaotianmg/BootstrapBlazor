@@ -30,10 +30,10 @@ namespace BootstrapBlazor.Components
         /// <summary>
         /// 获得 ModalDialog 集合
         /// </summary>
-        private List<ModalDialog> Dialogs { get; set; } = new(8);
+        private List<ModalDialog> Dialogs { get; } = new(8);
 
         /// <summary>
-        /// 获得/设置 是否后台关闭弹窗
+        /// 获得/设置 是否后台关闭弹窗 默认 false
         /// </summary>
         [Parameter]
         public bool IsBackdrop { get; set; }
