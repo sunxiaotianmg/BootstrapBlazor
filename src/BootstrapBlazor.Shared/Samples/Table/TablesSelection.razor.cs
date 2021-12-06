@@ -26,7 +26,8 @@ namespace BootstrapBlazor.Shared.Samples.Table
         [NotNull]
         private List<Foo>? Items { get; set; }
 
-        private List<Foo> SelectedRows = new();
+        [NotNull]
+        private Table<Foo>? TableSelection { get; set; }
 
         /// <summary>
         /// OnInitialized 方法
@@ -36,12 +37,12 @@ namespace BootstrapBlazor.Shared.Samples.Table
             base.OnInitialized();
 
             Items = Foo.GenerateFoo(Localizer);
-            SelectedRows = Items.Take(4).ToList();
+            TableSelection.SelectedItems.AddRange(Items.Take(4));
         }
 
         private void OnClick()
         {
-            SelectedRows.Clear();
+            TableSelection.SelectedItems.Clear();
         }
 
         private Task<QueryData<Foo>> OnQueryAsync(QueryPageOptions options)
