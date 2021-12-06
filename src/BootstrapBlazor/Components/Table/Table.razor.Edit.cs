@@ -24,7 +24,7 @@ namespace BootstrapBlazor.Components
         /// 获得/设置 被选中数据集合
         /// </summary>
         /// <value></value>
-        protected List<TItem> SelectedItems { get; set; } = new List<TItem>();
+        protected List<TItem> SelectedItems { get; } = new List<TItem>();
 
         /// <summary>
         /// 获得/设置 是否正在查询数据
