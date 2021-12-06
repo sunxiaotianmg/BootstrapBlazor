@@ -81,11 +81,24 @@ namespace BootstrapBlazor.Components
         [Parameter]
         public bool IsKeyboard { get; set; } = true;
 
+        private List<TItem>? _SelectedRows;
         /// <summary>
         /// 获得/设置 被选中的数据集合
         /// </summary>
         [Parameter]
-        public List<TItem>? SelectedRows { get; set; }
+        public List<TItem>? SelectedRows
+        {
+            get { return _SelectedRows; }
+            set
+            {
+                _SelectedRows = value;
+                SelectedItems.Clear();
+                if (value != null)
+                {
+                    SelectedItems.AddRange(value);
+                }
+            }
+        }
 
         /// <summary>
         /// 获得/设置 被选中的数据集合回调委托
