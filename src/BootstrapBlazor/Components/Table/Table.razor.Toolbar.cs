@@ -304,10 +304,6 @@ namespace BootstrapBlazor.Components
                     // 数据源为 DataTable 新建后重建行与列
                     await DynamicContext.AddAsync(SelectedItems.AsEnumerable().OfType<IDynamicObject>());
                     ResetDynamicContext();
-                    if (SelectedRows != null)
-                    {
-                        SelectedItems.AddRange(RowItems.Where(i => SelectedRows.Contains(i)));
-                    }
                     StateHasChanged();
                 }
                 else
@@ -607,7 +603,6 @@ namespace BootstrapBlazor.Components
             {
                 RowItems.RemoveAll(i => SelectedItems.Contains(i));
                 SelectedItems.Clear();
-                await OnSelectedRowsChanged();
                 await UpdateAsync();
             }
             else
@@ -649,16 +644,6 @@ namespace BootstrapBlazor.Components
                     PageIndex = Math.Max(1, Math.Min(PageIndex, int.Parse(Math.Ceiling((TotalCount - SelectedItems.Count) * 1d / PageItems).ToString())));
                     var items = PageItemsSource.Where(item => item >= (TotalCount - SelectedItems.Count));
                     PageItems = Math.Min(PageItems, items.Any() ? items.Min() : PageItems);
-
-                    if (SelectedRows != null && SelectedRows.Any())
-                    {
-                        SelectedRows.RemoveAll(item => SelectedItems.Contains(item));
-                        if (SelectedRowsChanged.HasDelegate)
-                        {
-                            await SelectedRowsChanged.InvokeAsync(SelectedRows);
-                        }
-                    }
-
                     SelectedItems.Clear();
                     await QueryAsync();
                 }

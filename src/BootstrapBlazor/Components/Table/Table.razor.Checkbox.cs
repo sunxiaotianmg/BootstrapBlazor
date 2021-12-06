@@ -81,7 +81,7 @@ namespace BootstrapBlazor.Components
         /// </summary>
         /// <param name="state"></param>
         /// <param name="val"></param>
-        protected virtual async Task OnHeaderCheck(CheckboxState state, TItem val)
+        protected virtual Task OnHeaderCheck(CheckboxState state, TItem val)
         {
             switch (state)
             {
@@ -89,33 +89,26 @@ namespace BootstrapBlazor.Components
                     // select all
                     SelectedItems.Clear();
                     SelectedItems.AddRange(RowItems);
-
-                    // callback
-                    await OnSelectedRowsChanged();
                     StateHasChanged();
                     break;
                 case CheckboxState.UnChecked:
                     // unselect all
                     SelectedItems.Clear();
-
-                    // callback
-                    await OnSelectedRowsChanged();
                     StateHasChanged();
                     break;
                 default:
                     break;
             }
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// 点击选择复选框时触发此方法
         /// </summary>
-        protected async Task OnCheck(CheckboxState state, TItem val)
+        protected Task OnCheck(CheckboxState state, TItem val)
         {
             if (state == CheckboxState.Checked) SelectedItems.Add(val);
             else SelectedItems.Remove(val);
-
-            await OnSelectedRowsChanged();
 
             // auto quit edit in cell mode
             AddInCell = false;
@@ -123,6 +116,7 @@ namespace BootstrapBlazor.Components
 
             // https://gitee.com/LongbowEnterprise/BootstrapBlazor/issues/I1UYQG
             StateHasChanged();
+            return Task.CompletedTask;
         }
     }
 }

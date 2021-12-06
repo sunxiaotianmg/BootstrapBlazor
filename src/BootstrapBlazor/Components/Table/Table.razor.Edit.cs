@@ -24,7 +24,7 @@ namespace BootstrapBlazor.Components
         /// 获得/设置 被选中数据集合
         /// </summary>
         /// <value></value>
-        protected List<TItem> SelectedItems { get; } = new List<TItem>();
+        public List<TItem> SelectedItems { get; } = new List<TItem>();
 
         /// <summary>
         /// 获得/设置 是否正在查询数据
@@ -80,31 +80,6 @@ namespace BootstrapBlazor.Components
         /// </summary>
         [Parameter]
         public bool IsKeyboard { get; set; } = true;
-
-        private List<TItem>? _SelectedRows;
-        /// <summary>
-        /// 获得/设置 被选中的数据集合
-        /// </summary>
-        [Parameter]
-        public List<TItem>? SelectedRows
-        {
-            get { return _SelectedRows; }
-            set
-            {
-                _SelectedRows = value;
-                SelectedItems.Clear();
-                if (value != null)
-                {
-                    SelectedItems.AddRange(value);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 获得/设置 被选中的数据集合回调委托
-        /// </summary>
-        [Parameter]
-        public EventCallback<List<TItem>> SelectedRowsChanged { get; set; }
 
         /// <summary>
         /// 获得/设置 行样式格式回调委托
@@ -237,8 +212,6 @@ namespace BootstrapBlazor.Components
                     SelectedItems.Add(val);
                 }
 
-                await OnSelectedRowsChanged();
-
                 // 更新 设置选中状态
                 StateHasChanged();
             }
@@ -246,23 +219,6 @@ namespace BootstrapBlazor.Components
             if (OnClickRowCallback != null)
             {
                 await OnClickRowCallback(val);
-            }
-        }
-
-        private async Task SetSelectedRows()
-        {
-            bool hasChanged = true;
-            if (_SelectedRows != null)
-            {
-                hasChanged = !_SelectedRows.SequenceEqual(SelectedItems);
-            }
-            if (hasChanged)
-            {
-                _SelectedRows = SelectedItems;
-                if (SelectedRowsChanged.HasDelegate)
-                {
-                    await SelectedRowsChanged.InvokeAsync(SelectedRows);
-                }
             }
         }
 
@@ -443,10 +399,6 @@ namespace BootstrapBlazor.Components
                         QueryItems = invoker(QueryItems, SortName, SortOrder);
                     }
                 }
-            }
-            if (SelectedRows != null)
-            {
-                SelectedItems.AddRange(RowItems.Where(i => SelectedRows.Contains(i)));
             }
         }
 
