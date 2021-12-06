@@ -39,6 +39,11 @@ namespace BootstrapBlazor.Shared.Samples.Table
             SelectedRows = Items.Take(4).ToList();
         }
 
+        private void OnClick()
+        {
+            SelectedRows.Clear();
+        }
+
         private Task<QueryData<Foo>> OnQueryAsync(QueryPageOptions options)
         {
             // 设置记录总数
