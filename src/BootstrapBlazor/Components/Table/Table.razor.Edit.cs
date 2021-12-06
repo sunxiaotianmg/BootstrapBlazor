@@ -249,12 +249,20 @@ namespace BootstrapBlazor.Components
             }
         }
 
-        private async Task OnSelectedRowsChanged()
+        private async Task SetSelectedRows()
         {
-            SelectedRows = new List<TItem>(SelectedItems);
-            if (SelectedRowsChanged.HasDelegate)
+            bool hasChanged = true;
+            if (_SelectedRows != null)
             {
-                await SelectedRowsChanged.InvokeAsync(SelectedRows);
+                hasChanged = !_SelectedRows.SequenceEqual(SelectedItems);
+            }
+            if (hasChanged)
+            {
+                _SelectedRows = SelectedItems;
+                if (SelectedRowsChanged.HasDelegate)
+                {
+                    await SelectedRowsChanged.InvokeAsync(SelectedRows);
+                }
             }
         }
 
