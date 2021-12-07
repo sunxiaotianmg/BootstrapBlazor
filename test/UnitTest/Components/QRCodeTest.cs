@@ -4,11 +4,7 @@
 
 using BootstrapBlazor.Components;
 using Bunit;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using UnitTest.Core;
 using Xunit;
@@ -17,14 +13,6 @@ namespace UnitTest.Components
 {
     public class QRCodeTest : BootstrapBlazorTestBase
     {
-        [Fact]
-        public void ShowButtons()
-        {
-            var cut = Context.RenderComponent<QRCode>(builder => builder.Add(a => a.ShowButtons, true));
-
-            Assert.Contains("button", cut.Markup);
-        }
-
         [Fact]
         public void PlaceHolder()
         {
@@ -73,18 +61,15 @@ namespace UnitTest.Components
         [Fact]
         public void OnGenerated()
         {
-            var message = "";
+            var generated = false;
             var cut = Context.RenderComponent<QRCode>(builder =>
             {
-                builder.Add(a => a.OnGenerated, () => { message = "complete"; return Task.CompletedTask; });
+                builder.Add(a => a.OnGenerated, () => { generated = true; return Task.CompletedTask; });
                 builder.Add(a => a.ShowButtons, true);
             });
 
-            var input = cut.Find("input");
-            input.TextContent = "qrcode";
-
-            var button = cut.Find(".btn-success");
-            button.Click();
+            cut.InvokeAsync(() => cut.Instance.Generated());
+            Assert.True(generated);
         }
 
         [Fact]
@@ -95,17 +80,8 @@ namespace UnitTest.Components
                 builder.Add(a => a.ShowButtons, true);
             });
 
-            var input = cut.Find("input");
-            input.TextContent = "qrcode";
-
-            var button = cut.Find(".btn-success");
-            button.Click();
-
-            var clearbutton = cut.Find(".btn-secondary");
-            clearbutton.Click();
-
-            var cc = cut.Instance.GetType().GetProperty("MethodName", BindingFlags.Default | BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(cut.Instance, null);
-            //Assert.DoesNotContain("clear",);
+            var button = cut.FindComponents<Button>().First(b => b.Instance.Color == Color.Secondary);
+            cut.InvokeAsync(() => button.Instance.OnClick.InvokeAsync());
         }
     }
 }
