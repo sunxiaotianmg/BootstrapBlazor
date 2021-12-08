@@ -202,5 +202,29 @@ namespace UnitTest.Components
 
             Assert.True(cut.Instance.Value);
         }
+
+        [Fact]
+        public void OnText_Ok()
+        {
+            var cut = Context.RenderComponent<NullSwitch>(builder =>
+            {
+                builder.Add(a => a.OnText, "On");
+                builder.Add(a => a.Value, true);
+            });
+
+            Assert.Equal("On", cut.Find(".switch-label").TextContent);
+        }
+
+        [Fact]
+        public void OffText_Ok()
+        {
+            var cut = Context.RenderComponent<NullSwitch>(builder =>
+            {
+                builder.Add(a => a.OffText, "Off");
+                builder.Add(a => a.Value, false);
+            });
+
+            Assert.Equal("Off", cut.Find(".switch-label").TextContent);
+        }
     }
 }
