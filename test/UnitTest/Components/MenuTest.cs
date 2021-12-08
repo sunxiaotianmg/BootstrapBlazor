@@ -28,26 +28,52 @@ namespace UnitTest.Components
                 new("Menu1")
                 {
                     IsActive = true,
+                    Icon = "fa fa-fa",
                     Url = "https://www.blazor.zone"
                 },
                 new("Menu2")
                 {
+                    Icon = "fa fa-fw fa-fa",
                     Items = new List<MenuItem>
                     {
                         new("Menu21")
                         {
+                            Icon = "fa fa-fa",
                             IsDisabled = true
                         },
                         new("Menu22")
                         {
-                            Url = "/menu22"
+                            Url = "/menu22",
+                            Icon = "fa fa-fa"
+                        },
+                        new("Menu23")
+                        {
+                            Icon = "fa fa-fw fa-fa",
+                            Items = new List<MenuItem>
+                            {
+                                new("Menu231"),
+                                new("Menu232")
+                                {
+                                    Icon = "fa fa-fa",
+                                    Template = BootstrapDynamicComponent.CreateComponent<Button>().Render()
+                                }
+                            }
                         },
                         new()
                         {
+                            Icon = "fa fa-fa",
                             Text = "Menu23",
                             Target = "_blank",
                             Match = NavLinkMatch.All
                         }
+                    }
+                },
+                new("Menu3")
+                {
+                    Icon = "fa fa-fa",
+                    Items = new List<MenuItem>
+                    {
+                        new MenuItem("Menu31")
                     }
                 }
             };
@@ -178,6 +204,10 @@ namespace UnitTest.Components
                 pb.Add(m => m.Items, Items);
             });
 
+            // 子菜单 Click 触发
+            var div = cut.Find(".nav-item");
+            div.Click(new MouseEventArgs());
+
             // 查找第一个 li 节点
             var menuItems = cut.Find("li");
             menuItems.Click(new MouseEventArgs());
@@ -250,12 +280,17 @@ namespace UnitTest.Components
                             new MenuItem("Test11"),
                             new MenuItem("Test12")
                         }
-                    },
-                    new MenuItem("Test2")
+                    }
                 }
             };
             subs = item.GetAllSubItems();
             Assert.NotEmpty(subs.ToList());
+        }
+
+        [Fact]
+        public void MenuLink_Error()
+        {
+            Assert.ThrowsAny<InvalidOperationException>(() => Context.RenderComponent<MenuLink>());
         }
 
         [Fact]
