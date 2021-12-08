@@ -11,7 +11,7 @@
             <li class="@GetClassString(item)">
                 @if (item.Items.Any() && !item.IsDisabled)
                 {
-                    <SubMenu Item="@item" OnClick="OnClick" />
+                    <SubMenu Item="@item" OnClick="OnClickItem" />
                 }
                 else
                 {
