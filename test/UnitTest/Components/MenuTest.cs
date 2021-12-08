@@ -4,8 +4,9 @@
 
 using BootstrapBlazor.Components;
 using Bunit;
+using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components.Web;
-using System;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnitTest.Core;
@@ -35,6 +36,9 @@ namespace UnitTest.Components
                             IsDisabled = true
                         },
                         new("Menu22")
+                        {
+                            Url = "/menu22"
+                        }
                     }
                 }
             };
@@ -203,11 +207,14 @@ namespace UnitTest.Components
         [Fact]
         public void ActiveItem_Ok()
         {
+            // 设置 后通过菜单激活 ActiveItem 不为空
+            var nav = Context.Services.GetRequiredService<FakeNavigationManager>();
+            nav.NavigateTo("/menu22");
             var cut = Context.RenderComponent<Menu>(pb =>
             {
                 pb.Add(m => m.Items, Items);
-                pb.Add(m => m.DisableNavigation, true);
             });
+            var menu = cut.Find("li");
         }
     }
 }
