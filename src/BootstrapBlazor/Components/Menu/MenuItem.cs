@@ -34,18 +34,18 @@ namespace BootstrapBlazor.Components
         public string? Url { get; set; }
 
         /// <summary>
-        /// 获得/设置 是否激活
+        /// 获得/设置 是否激活 默认 false 未激活 一般不设置
         /// </summary>
         /// <value></value>
         public bool IsActive { get; set; }
 
         /// <summary>
-        /// 获得/设置 是否收缩 默认收缩
+        /// 获得/设置 是否收缩 默认 true 收缩 
         /// </summary>
         public bool IsCollapsed { get; set; } = true;
 
         /// <summary>
-        /// 获得/设置 A 标签 target 参数
+        /// 获得/设置 A 标签 target 参数 默认 null
         /// </summary>
         public string? Target { get; set; }
 
