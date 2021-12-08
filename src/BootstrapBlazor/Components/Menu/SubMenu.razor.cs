@@ -3,6 +3,7 @@
 // Website: https://www.blazor.zone or https://argozhang.github.io/
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -23,9 +24,7 @@ namespace BootstrapBlazor.Components
             .Build();
 
         private string? GetIconString => string.IsNullOrEmpty(Item.Icon)
-            ? (Parent != null && Parent.IsVertical
-                ? "fa fa-fw"
-                : null)
+            ? null
             : Item.Icon.Contains("fa-fw", StringComparison.OrdinalIgnoreCase)
                 ? Item.Icon
                 : $"{Item.Icon} fa-fw";
@@ -44,7 +43,12 @@ namespace BootstrapBlazor.Components
         public Func<MenuItem, Task>? OnClick { get; set; }
 
         [CascadingParameter]
+        [NotNull]
         private Menu? Parent { get; set; }
+
+        [Inject]
+        [NotNull]
+        private IStringLocalizer<Menu>? Localizer { get; set; }
 
         /// <summary>
         /// 
@@ -55,6 +59,24 @@ namespace BootstrapBlazor.Components
             .AddClass("active", item.IsActive && !item.IsDisabled)
             .AddClass("disabled", item.IsDisabled)
             .Build();
+
+        /// <summary>
+        /// SetParametersAsync 方法
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public override Task SetParametersAsync(ParameterView parameters)
+        {
+            parameters.SetParameterProperties(this);
+
+            if (Parent == null)
+            {
+                throw new InvalidOperationException(Localizer["InvalidOperationExceptionMessage"]);
+            }
+
+            // For derived components, retain the usual lifecycle with OnInit/OnParametersSet/etc.
+            return base.SetParametersAsync(ParameterView.Empty);
+        }
 
         private async Task OnClickItem(MenuItem item)
         {
