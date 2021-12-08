@@ -8,6 +8,7 @@ using Bunit.TestDoubles;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -175,15 +176,20 @@ namespace UnitTest.Components
             var cut = Context.RenderComponent<Menu>(pb =>
             {
                 pb.Add(m => m.Items, Items);
+            });
+
+            // 查找第一个 li 节点
+            var menuItems = cut.Find("li");
+            menuItems.Click(new MouseEventArgs());
+
+            cut.SetParametersAndRender(pb =>
+            {
                 pb.Add(m => m.OnClick, item =>
                 {
                     clicked = true;
                     return Task.CompletedTask;
                 });
             });
-
-            // 查找第一个 li 节点
-            var menuItems = cut.Find("li");
             menuItems.Click(new MouseEventArgs());
             Assert.True(clicked);
 
@@ -250,6 +256,18 @@ namespace UnitTest.Components
             };
             subs = item.GetAllSubItems();
             Assert.NotEmpty(subs.ToList());
+        }
+
+        [Fact]
+        public void TopMenu_Erorr()
+        {
+            Assert.ThrowsAny<InvalidOperationException>(() => Context.RenderComponent<TopMenu>());
+        }
+
+        [Fact]
+        public void SideMenu_Erorr()
+        {
+            Assert.ThrowsAny<InvalidOperationException>(() => Context.RenderComponent<SideMenu>());
         }
     }
 }
