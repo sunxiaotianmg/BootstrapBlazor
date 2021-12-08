@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 // Website: https://www.blazor.zone or https://argozhang.github.io/
 
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +68,7 @@ namespace BootstrapBlazor.Components
         /// <summary>
         /// 获得/设置 菜单内子组件
         /// </summary>
-        public BootstrapDynamicComponent? Component { get; set; }
+        public RenderFragment? Template { get; set; }
 
         /// <summary>
         /// 获得 当前菜单所在层次 从 0 开始

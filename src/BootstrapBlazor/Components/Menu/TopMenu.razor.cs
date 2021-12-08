@@ -34,7 +34,7 @@ namespace BootstrapBlazor.Components
         /// </summary>
         /// <param name="icon"></param>
         /// <returns></returns>
-        protected static string? GetIconString(string icon) => icon.Contains("fa-fw", StringComparison.OrdinalIgnoreCase)
+        protected static string GetIconString(string icon) => icon.Contains("fa-fw", StringComparison.OrdinalIgnoreCase)
                 ? icon
                 : $"{icon} fa-fw";
 
