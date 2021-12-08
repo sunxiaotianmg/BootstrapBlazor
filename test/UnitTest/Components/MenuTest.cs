@@ -21,63 +21,88 @@ namespace UnitTest.Components
     {
         private List<MenuItem> Items { get; set; }
 
-        public MenuTest()
+        public MenuTest() => Items = new List<MenuItem>
         {
-            Items = new List<MenuItem>
+            new("Menu1")
             {
-                new("Menu1")
+                IsActive = true,
+                Icon = "fa fa-fa",
+                Url = "https://www.blazor.zone"
+            },
+            new("Menu2")
+            {
+                Icon = "fa fa-fw fa-fa",
+                Items = new List<MenuItem>
                 {
-                    IsActive = true,
-                    Icon = "fa fa-fa",
-                    Url = "https://www.blazor.zone"
-                },
-                new("Menu2")
-                {
-                    Icon = "fa fa-fw fa-fa",
-                    Items = new List<MenuItem>
+                    new("Menu21")
                     {
-                        new("Menu21")
+                        Icon = "fa fa-fa",
+                        IsDisabled = true
+                    },
+                    new("Menu22")
+                    {
+                        Url = "/menu22",
+                        Icon = "fa fa-fw fa-fa"
+                    },
+                    new("Menu23")
+                    {
+                        Icon = "fa fa-fw fa-fa",
+                        Items = new List<MenuItem>
                         {
-                            Icon = "fa fa-fa",
-                            IsDisabled = true
-                        },
-                        new("Menu22")
-                        {
-                            Url = "/menu22",
-                            Icon = "fa fa-fa"
-                        },
-                        new("Menu23")
-                        {
-                            Icon = "fa fa-fw fa-fa",
-                            Items = new List<MenuItem>
+                            new("Menu231"),
+                            new("Menu232")
                             {
-                                new("Menu231"),
-                                new("Menu232")
+                                Template = BootstrapDynamicComponent.CreateComponent<Button>().Render(),
+                                Items = new List<MenuItem>()
                                 {
-                                    Icon = "fa fa-fa",
-                                    Template = BootstrapDynamicComponent.CreateComponent<Button>().Render()
+                                    new MenuItem("Menu2321")
+                                    {
+                                        Icon = "fa fa-fa",
+                                        Url = "/Menu2321"
+                                    },
+                                    new MenuItem("Menu2322")
+                                    {
+                                        Icon = "fa fa-fw fa-fa"
+                                    },
+                                    new MenuItem("Menu2323")
                                 }
                             }
-                        },
-                        new()
+                        }
+                    },
+                    new("Menu24")
+                    {
+                        Icon = "fa fa-fa",
+                        Target = "_blank",
+                        Match = NavLinkMatch.All
+                    },
+                    new("Menu25")
+                    {
+                        Icon = "fa fa-fa",
+                        Items = new List<MenuItem>
                         {
-                            Icon = "fa fa-fa",
-                            Text = "Menu23",
-                            Target = "_blank",
-                            Match = NavLinkMatch.All
+                            new MenuItem("Menu251")
+                            {
+                                Icon = "fa fa-fa"
+                            }
                         }
                     }
-                },
-                new("Menu3")
-                {
-                    Icon = "fa fa-fa",
-                    Items = new List<MenuItem>
-                    {
-                        new MenuItem("Menu31")
-                    }
                 }
-            };
-        }
+            },
+            new("Menu3")
+            {
+                Icon = "fa fa-fa",
+                Items = new List<MenuItem>
+                {
+                    new MenuItem("Menu31")
+                }
+            },
+            new("Menu4")
+            {
+                IsActive = true,
+                Icon = "fa fa-fw fa-fa",
+                Url = "https://www.blazor.zone"
+            }
+        };
 
         [Fact]
         public void Items_Ok()
@@ -89,6 +114,11 @@ namespace UnitTest.Components
             cut.SetParametersAndRender(pb =>
             {
                 pb.Add(m => m.Items, Items);
+            });
+
+            cut.SetParametersAndRender(pb =>
+            {
+                pb.Add(m => m.IsVertical, true);
             });
             Assert.Contains("Menu1", cut.Markup);
         }
@@ -223,6 +253,13 @@ namespace UnitTest.Components
             menuItems.Click(new MouseEventArgs());
             Assert.True(clicked);
 
+            // SubMenu Click
+            var sub = cut.Find(".sub-menu div.nav-item");
+            sub.Click(new MouseEventArgs());
+
+            sub = cut.FindAll(".sub-menu div.nav-item").Last();
+            sub.Click(new MouseEventArgs());
+
             // 设置禁止导航 
             // 顶栏模式
             cut.SetParametersAndRender(pb =>
@@ -258,7 +295,17 @@ namespace UnitTest.Components
             {
                 pb.Add(m => m.Items, Items);
             });
-            var menu = cut.Find("li");
+        }
+
+        [Fact]
+        public void SubMenu_ClassString_Ok()
+        {
+            var nav = Context.Services.GetRequiredService<FakeNavigationManager>();
+            nav.NavigateTo("/menu2321");
+            var cut = Context.RenderComponent<Menu>(pb =>
+            {
+                pb.Add(m => m.Items, Items);
+            });
         }
 
         [Fact]
@@ -303,6 +350,12 @@ namespace UnitTest.Components
         public void SideMenu_Erorr()
         {
             Assert.ThrowsAny<InvalidOperationException>(() => Context.RenderComponent<SideMenu>());
+        }
+
+        [Fact]
+        public void SubMenu_Erorr()
+        {
+            Assert.ThrowsAny<InvalidOperationException>(() => Context.RenderComponent<SubMenu>());
         }
     }
 }
