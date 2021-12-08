@@ -7,6 +7,7 @@ using Bunit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using UnitTest.Core;
@@ -37,6 +38,17 @@ namespace UnitTest.Components
             });
 
             Assert.Equal("Color picker", cut.Find("label").TextContent);
+        }
+
+        private string? PlaceHolder { get; set; } = "Please pick";
+
+        [Fact]
+        public void Display_OK()
+        {
+            var cut = Context.RenderComponent<ColorPicker>(builder =>
+            {
+                builder.Add(a => a.ValueExpression, () => PlaceHolder);
+            });
         }
     }
 }
