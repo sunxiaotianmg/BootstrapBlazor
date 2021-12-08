@@ -4,12 +4,6 @@
 
 using BootstrapBlazor.Components;
 using Bunit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using UnitTest.Core;
 using Xunit;
 
@@ -18,37 +12,15 @@ namespace UnitTest.Components
     public class ColorPickerTest : BootstrapBlazorTestBase
     {
         [Fact]
-        public void PlaceHolder_OK()
-        {
-            var cut = Context.RenderComponent<ColorPicker>(builder => builder.Add(a => a.AdditionalAttributes, new Dictionary<string, object>
-            {
-                ["placeholder"] = "Please pick"
-            }));
-
-            Assert.Contains("Please pick", cut.Markup);
-        }
-
-        [Fact]
         public void DisplayText_OK()
         {
             var cut = Context.RenderComponent<ColorPicker>(builder =>
             {
                 builder.Add(a => a.ShowLabel, true);
-                builder.Add(a => a.DisplayText, "Color picker");
+                builder.Add(a => a.DisplayText, "Test_Color");
             });
 
-            Assert.Equal("Color picker", cut.Find("label").TextContent);
-        }
-
-        private string? PlaceHolder { get; set; } = "Please pick";
-
-        [Fact]
-        public void Display_OK()
-        {
-            var cut = Context.RenderComponent<ColorPicker>(builder =>
-            {
-                builder.Add(a => a.ValueExpression, () => PlaceHolder);
-            });
+            Assert.Equal("Test_Color", cut.Find("label").TextContent);
         }
     }
 }
