@@ -5,9 +5,11 @@
 using BootstrapBlazor.Components;
 using Bunit;
 using Bunit.TestDoubles;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnitTest.Core;
 using Xunit;
@@ -38,6 +40,12 @@ namespace UnitTest.Components
                         new("Menu22")
                         {
                             Url = "/menu22"
+                        },
+                        new()
+                        {
+                            Text = "Menu23",
+                            Target = "_blank",
+                            Match = NavLinkMatch.All
                         }
                     }
                 }
@@ -215,6 +223,33 @@ namespace UnitTest.Components
                 pb.Add(m => m.Items, Items);
             });
             var menu = cut.Find("li");
+        }
+
+        [Fact]
+        public void GetAllSubItems_Ok()
+        {
+            var item = new MenuItem("Test");
+            var subs = item.GetAllSubItems();
+            Assert.Empty(subs.ToList());
+
+            item = new MenuItem("Test")
+            {
+                Items = new[]
+                {
+                    new MenuItem()
+                    {
+                        Text = "Test1",
+                        Items = new List<MenuItem>()
+                        {
+                            new MenuItem("Test11"),
+                            new MenuItem("Test12")
+                        }
+                    },
+                    new MenuItem("Test2")
+                }
+            };
+            subs = item.GetAllSubItems();
+            Assert.NotEmpty(subs.ToList());
         }
     }
 }
