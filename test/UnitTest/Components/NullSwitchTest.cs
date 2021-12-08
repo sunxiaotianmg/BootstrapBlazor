@@ -189,19 +189,18 @@ namespace UnitTest.Components
             Assert.NotNull(label);
         }
 
-        private bool? Value { get; set; }
-
         [Fact]
         public void DefaultValueWhenNull_Ok()
         {
             var cut = Context.RenderComponent<NullSwitch>(builder =>
             {
-                builder.Add(a => a.DefaultValueWhenNull, true);
-                builder.Add(a => a.Value, Value);
+                builder.Add(a => a.DefaultValueWhenNull, false);
+                builder.Add(a => a.Value, null);
             });
 
             cut.Find("span").Click();
-            var a = cut.Instance.Value;
+
+            Assert.True(cut.Instance.Value);
         }
     }
 }
