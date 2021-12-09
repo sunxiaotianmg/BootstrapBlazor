@@ -22,8 +22,13 @@ namespace UnitTest.Components
         public void Width_Ok()
         {
             var cut = Context.RenderComponent<Drawer>(builder => builder.Add(a => a.Width, "100px"));
-
             Assert.Contains("width: 100px", cut.Markup);
+
+            cut.SetParametersAndRender(pb =>
+            {
+                pb.Add(a => a.Width, "");
+            });
+            Assert.DoesNotContain("width:", cut.Markup);
         }
 
         [Fact]
@@ -34,8 +39,13 @@ namespace UnitTest.Components
                 builder.Add(a => a.Height, "100px");
                 builder.Add(a => a.Placement, Placement.Top);
             });
-
             Assert.Contains("height: 100px", cut.Markup);
+
+            cut.SetParametersAndRender(pb =>
+            {
+                pb.Add(a => a.Height, "");
+            });
+            Assert.DoesNotContain("height:", cut.Markup);
         }
 
         [Fact]
