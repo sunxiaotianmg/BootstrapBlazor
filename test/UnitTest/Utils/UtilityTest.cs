@@ -116,11 +116,5 @@ namespace UnitTest.Utils
             Utility.Copy(d1, d2);
             Assert.Equal("Test", d2.Name);
         }
-
-        [Fact]
-        public void CreateDisplayByFieldType_Ok()
-        {
-
-        }
     }
 }
