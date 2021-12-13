@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -687,30 +688,27 @@ namespace BootstrapBlazor.Components
             ? builder =>
             {
                 var index = 0;
+                builder.OpenComponent<ErrorLogger>(index++);
                 if (ErrorLogger != null)
                 {
                     // 未使用 Layout 组件
-                    builder.OpenComponent<CascadingValue<ErrorLogger>>(index++);
-                    builder.AddAttribute(index++, nameof(CascadingValue<ErrorLogger>.Value), ErrorLogger);
-                    builder.AddAttribute(index++, nameof(CascadingValue<ErrorLogger>.IsFixed), true);
-                    builder.AddAttribute(index++, nameof(CascadingValue<ErrorLogger>.ChildContent), content);
-                    builder.CloseComponent();
+                    builder.AddAttribute(index++, nameof(Components.ErrorLogger.ShowToast), ErrorLogger.ShowToast);
+                    builder.AddAttribute(index++, nameof(Components.ErrorLogger.OnErrorHandleAsync), ErrorLogger.HandlerExceptionAsync);
+                    builder.AddAttribute(index++, nameof(Components.ErrorLogger.ToastTitle), ErrorLogger.ToastTitle);
                 }
                 else
                 {
                     // 使用 Layout 组件
                     if (Layout != null && Layout.IsErrorHandler)
                     {
-                        builder.OpenComponent<ErrorLogger>(index++);
-                        if (Layout.OnErrorHandleAsync != null)
-                        {
-                            builder.AddAttribute(index++, nameof(Components.ErrorLogger.OnErrorHandleAsync), Layout.OnErrorHandleAsync);
-                        }
-                        builder.AddAttribute(index++, nameof(Components.ErrorLogger.ChildContent), content);
-                        builder.CloseComponent();
+                        builder.AddAttribute(index++, nameof(Components.ErrorLogger.ShowToast), Layout.ShowToast);
+                        builder.AddAttribute(index++, nameof(Components.ErrorLogger.OnErrorHandleAsync), Layout.OnErrorHandleAsync);
+                        builder.AddAttribute(index++, nameof(Components.ErrorLogger.ToastTitle), Layout.ToastTitle);
                     }
                 }
+                builder.AddAttribute(index++, nameof(Components.ErrorLogger.ChildContent), content);
+                builder.CloseComponent();
             }
-            : content;
+        : content;
     }
 }
