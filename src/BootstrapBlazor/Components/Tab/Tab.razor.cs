@@ -219,12 +219,6 @@ namespace BootstrapBlazor.Components
         [Parameter]
         public string? ToastTitle { get; set; }
 
-        /// <summary>
-        /// 获得/设置 父级容器 Layout 实例
-        /// </summary>
-        [CascadingParameter]
-        private Layout? Layout { get; set; }
-
         [Inject]
         [NotNull]
         private IStringLocalizer<Tab>? Localizer { get; set; }
@@ -682,30 +676,14 @@ namespace BootstrapBlazor.Components
             }
         }
 
-        private bool IsErrorHandle => (Layout != null && Layout.IsErrorHandler) || ErrorLogger != null;
-
-        private RenderFragment? RenderTabItemContent(RenderFragment? content) => IsErrorHandle
+        private RenderFragment? RenderTabItemContent(RenderFragment? content) => ErrorLogger != null
             ? builder =>
             {
                 var index = 0;
                 builder.OpenComponent<ErrorLogger>(index++);
-                if (ErrorLogger != null)
-                {
-                    // 未使用 Layout 组件
-                    builder.AddAttribute(index++, nameof(Components.ErrorLogger.ShowToast), ErrorLogger.ShowToast);
-                    builder.AddAttribute(index++, nameof(Components.ErrorLogger.OnErrorHandleAsync), ErrorLogger.HandlerExceptionAsync);
-                    builder.AddAttribute(index++, nameof(Components.ErrorLogger.ToastTitle), ErrorLogger.ToastTitle);
-                }
-                else
-                {
-                    // 使用 Layout 组件
-                    if (Layout != null && Layout.IsErrorHandler)
-                    {
-                        builder.AddAttribute(index++, nameof(Components.ErrorLogger.ShowToast), Layout.ShowToast);
-                        builder.AddAttribute(index++, nameof(Components.ErrorLogger.OnErrorHandleAsync), Layout.OnErrorHandleAsync);
-                        builder.AddAttribute(index++, nameof(Components.ErrorLogger.ToastTitle), Layout.ToastTitle);
-                    }
-                }
+                builder.AddAttribute(index++, nameof(Components.ErrorLogger.ShowToast), ErrorLogger.ShowToast);
+                builder.AddAttribute(index++, nameof(Components.ErrorLogger.OnErrorHandleAsync), OnErrorHandleAsync);
+                builder.AddAttribute(index++, nameof(Components.ErrorLogger.ToastTitle), ErrorLogger.ToastTitle);
                 builder.AddAttribute(index++, nameof(Components.ErrorLogger.ChildContent), content);
                 builder.CloseComponent();
             }

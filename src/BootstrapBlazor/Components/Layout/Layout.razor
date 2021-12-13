@@ -5,7 +5,7 @@
     @if (IsInit)
     {
         <ErrorLogger OnErrorHandleAsync="OnErrorHandleAsync!">
-            if (IsAuthenticated)
+            @if (IsAuthenticated)
             {
                 <section @attributes="AdditionalAttributes" class="@ClassString">
                     @if (Side == null)
@@ -99,7 +99,10 @@ RenderFragment RenderMain =>
     {
         <RenderTemplate>
             <Tab ClickTabToNavigation="true" ShowExtendButtons="true" ShowClose="true" TabItemTextDictionary="@TabItemTextDictionary"
-                 AdditionalAssemblies="@AdditionalAssemblies" DefaultUrl="@TabDefaultUrl" ExcludeUrls="@ExcludeUrls" NotFoundTabText="@NotFoundTabText" IsOnlyRenderActiveTab="IsOnlyRenderActiveTab" Body="@Main">
+                 AdditionalAssemblies="@AdditionalAssemblies" NotFoundTabText="@NotFoundTabText"
+                 DefaultUrl="@TabDefaultUrl" ExcludeUrls="@ExcludeUrls" IsOnlyRenderActiveTab="IsOnlyRenderActiveTab"
+                 ShowToast="ShowToast" ToastTitle="@ToastTitle" OnErrorHandleAsync="OnErrorHandleAsync!"
+                 Body="@Main">
                 <NotAuthorized>
                     @NotAuthorized
                 </NotAuthorized>
@@ -108,12 +111,6 @@ RenderFragment RenderMain =>
                 </NotFound>
             </Tab>
         </RenderTemplate>
-    }
-    else if(IsErrorHandler)
-    {
-        <ErrorLogger OnErrorHandleAsync="OnErrorHandleAsync!">
-            @Main
-        </ErrorLogger>
     }
     else
     {
