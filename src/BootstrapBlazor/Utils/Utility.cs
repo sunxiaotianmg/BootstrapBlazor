@@ -530,14 +530,23 @@ namespace BootstrapBlazor.Components
         /// </summary>
         /// <param name="items">数据集合</param>
         /// <param name="parentItem">父级节点</param>
-        /// <param name="activeItem"></param>
         public static TreeItem? CascadingTree(this List<TreeItem> items, TreeItem? parentItem = null)
         {
+            TreeItem? activeItem = null;
             items.ForEach(i =>
             {
                 i.Parent = parentItem;
-                i.Items.CascadingTree(i);
+                if (i.IsActive)
+                {
+                    activeItem = i;
+                }
+                var item = i.Items.CascadingTree(i);
+                if (item != null)
+                {
+                    activeItem = item;
+                }
             });
+            return activeItem;
         }
 
         /// <summary>

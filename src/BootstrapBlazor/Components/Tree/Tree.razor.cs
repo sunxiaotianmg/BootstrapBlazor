@@ -146,7 +146,7 @@ namespace BootstrapBlazor.Components
             // 通过 Items 构造层次结构
             if (_itemsChanged)
             {
-                Items?.CascadingTree();
+                ActiveItem = Items?.CascadingTree();
 
                 if (ActiveItem != null)
                 {
