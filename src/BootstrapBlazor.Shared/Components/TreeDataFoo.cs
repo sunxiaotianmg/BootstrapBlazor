@@ -36,7 +36,7 @@ namespace BootstrapBlazor.Shared.Components
                 new TreeDataFoo() { Text = "子菜单二", Code = "1050", ParentCode = "1020" },
                 new TreeDataFoo() { Text = "子菜单三", Code = "1060", ParentCode = "1020" },
 
-                new TreeDataFoo() { Text = "孙菜单一", Code = "1070", ParentCode = "1050", IsActive = true },
+                new TreeDataFoo() { Text = "孙菜单一", Code = "1070", ParentCode = "1050" },
                 new TreeDataFoo() { Text = "孙菜单二", Code = "1080", ParentCode = "1050" },
                 new TreeDataFoo() { Text = "孙菜单三", Code = "1090", ParentCode = "1050" },
 
