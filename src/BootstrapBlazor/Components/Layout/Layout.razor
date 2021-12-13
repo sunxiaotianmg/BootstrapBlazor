@@ -4,40 +4,21 @@
 <CascadingValue Value="this" IsFixed="true">
     @if (IsInit)
     {
-        if (IsAuthenticated)
-        {
-            <section @attributes="AdditionalAttributes" class="@ClassString">
-                @if (Side == null)
-                {
-                    @RenderHeader.Invoke(false)
-                    @RenderMain
-                    @if (ShowFooter)
+        <ErrorLogger OnErrorHandleAsync="OnErrorHandleAsync!">
+            if (IsAuthenticated)
+            {
+                <section @attributes="AdditionalAttributes" class="@ClassString">
+                    @if (Side == null)
                     {
-                        @RenderFooter
-                    }
-                }
-                else if (IsFullSide)
-                {
-                    <aside class="@SideClassString" style="@SideStyleString">
-                        @Side
-                        @if (Menus != null)
-                        {
-                            @RenderMenu.Invoke(IsFullSide)
-                        }
-                    </aside>
-                    <section class="layout-right">
-                        @RenderHeader.Invoke(ShowCollapseBar)
+                        @RenderHeader.Invoke(false)
                         @RenderMain
                         @if (ShowFooter)
                         {
                             @RenderFooter
                         }
-                    </section>
-                }
-                else
-                {
-                    @RenderHeader.Invoke(ShowCollapseBar);
-                    <section class="has-sidebar">
+                    }
+                    else if (IsFullSide)
+                    {
                         <aside class="@SideClassString" style="@SideStyleString">
                             @Side
                             @if (Menus != null)
@@ -45,29 +26,44 @@
                                 @RenderMenu.Invoke(IsFullSide)
                             }
                         </aside>
-                        @RenderMain
-                    </section>
-                    @if (ShowFooter)
-                    {
-                        @RenderFooter
+                        <section class="layout-right">
+                            @RenderHeader.Invoke(ShowCollapseBar)
+                            @RenderMain
+                            @if (ShowFooter)
+                            {
+                                @RenderFooter
+                            }
+                        </section>
                     }
-                }
-            </section>
-        }
-        else if (NotAuthorized != null)
-        {
-            @NotAuthorized
-        }
-        else if(IsErrorHandler)
-        {
-            <ErrorLogger OnErrorHandleAsync="OnErrorHandleAsync!">
+                    else
+                    {
+                        @RenderHeader.Invoke(ShowCollapseBar);
+                        <section class="has-sidebar">
+                            <aside class="@SideClassString" style="@SideStyleString">
+                                @Side
+                                @if (Menus != null)
+                                {
+                                    @RenderMenu.Invoke(IsFullSide)
+                                }
+                            </aside>
+                            @RenderMain
+                        </section>
+                        @if (ShowFooter)
+                        {
+                            @RenderFooter
+                        }
+                    }
+                </section>
+            }
+            else if (NotAuthorized != null)
+            {
+                @NotAuthorized
+            }
+            else
+            {
                 @Main
-            </ErrorLogger>
-        }
-        else
-        {
-            @Main
-        }
+            }
+        </ErrorLogger>
     }
 </CascadingValue>
 
