@@ -5,6 +5,7 @@
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -87,24 +88,12 @@ namespace BootstrapBlazor.Components
         [Parameter]
         public bool ShowSkeleton { get; set; }
 
-        private List<TreeItem>? _items;
-        private bool _itemsChanged;
         /// <summary>
         /// 获得/设置 菜单数据集合
         /// </summary>
         [Parameter]
-        public List<TreeItem>? Items
-        {
-            get
-            {
-                return _items;
-            }
-            set
-            {
-                _items = value;
-                _itemsChanged = true;
-            }
-        }
+        [NotNull]
+        public List<TreeItem>? Items { get; set; }
 
         /// <summary>
         /// 获得/设置 是否显示 CheckBox 默认 false 不显示
@@ -144,18 +133,15 @@ namespace BootstrapBlazor.Components
             base.OnParametersSet();
 
             // 通过 Items 构造层次结构
-            if (_itemsChanged)
+            Items ??= new();
+            ActiveItem = Items.CascadingTree();
+            if (ActiveItem != null)
             {
-                ActiveItem = Items?.CascadingTree();
-
-                if (ActiveItem != null)
+                var item = ActiveItem;
+                while (item.Parent != null)
                 {
-                    var item = ActiveItem;
-                    while (item.Parent != null)
-                    {
-                        item.Parent.IsExpanded = true;
-                        item = item.Parent;
-                    }
+                    item.Parent.IsExpanded = true;
+                    item = item.Parent;
                 }
             }
         }
